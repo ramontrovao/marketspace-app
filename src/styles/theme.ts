@@ -15,6 +15,7 @@ export const THEME = {
     GRAY_7: '#F7F7F8',
   },
   FONT_WEIGHTS: {
+    LIGHT: 300,
     REGULAR: 400,
     BOLD: 700,
   },
