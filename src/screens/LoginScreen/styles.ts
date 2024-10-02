@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import {Text} from '../../components/Text';
 
 export const LoginContainer = styled.SafeAreaView`
   flex: 1;
@@ -6,7 +7,7 @@ export const LoginContainer = styled.SafeAreaView`
   align-items: center;
 `;
 
-export const LoginTitle = styled.Text`
+export const LoginTitle = styled(Text)`
   font-size: 24px;
   font-weight: 700;
   color: '#000';
