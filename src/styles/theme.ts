@@ -19,10 +19,10 @@ export const THEME = {
     BOLD: 700,
   },
   FONT_SIZES: {
-    XS: 12,
-    SM: 14,
-    MD: 16,
-    LG: 20,
-    XL: 24,
+    XS: '12px',
+    SM: '14px',
+    MD: '16px',
+    LG: '20px',
+    XL: '24px',
   },
 } as const;
