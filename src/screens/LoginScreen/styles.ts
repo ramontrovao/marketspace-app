@@ -10,5 +10,5 @@ export const LoginContainer = styled.SafeAreaView`
 export const LoginTitle = styled(Text)`
   font-size: 24px;
   font-weight: 700;
-  color: '#000';
+  color: #000;
 `;

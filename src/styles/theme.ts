@@ -1,6 +1,10 @@
+import {DefaultTheme} from 'styled-components/native';
+
 // Theme based on Style Guide of project Figma
-export const THEME = {
+export const THEME: DefaultTheme = {
   COLORS: {
+    BLACK: '#000',
+    WHITE: '#FFF',
     BLUE: '#364D9D',
     BLUE_LIGHT: '#647AC7',
     RED_LIGHT: '#EE7979',
@@ -23,4 +27,4 @@ export const THEME = {
     LG: 20,
     XL: 24,
   },
-};
+} as const;
