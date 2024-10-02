@@ -54,7 +54,7 @@ export const BottomWrapper = styled.View`
   justify-content: center;
   align-items: center;
   gap: 8px;
-  flex: 0.25;
+  flex: 0.15;
 `;
 
 export const SignUpTitle = styled(Text)`
