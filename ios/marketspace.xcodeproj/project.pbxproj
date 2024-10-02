@@ -17,6 +17,7 @@
 		94432580859A958903DB88E9 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 1AEABB8248D2DF7FFA93B23F /* PrivacyInfo.xcprivacy */; };
 		D688EA1A3744491F947B3BF7 /* Karla-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5FC5AA13DC0945CE94543A6D /* Karla-Bold.ttf */; };
 		FFA92A075B10474A81C48C19 /* Karla-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 62FF1CF5A48E4024ABA4B6B6 /* Karla-Regular.ttf */; };
+		4C3F0CDA8EF04C76854A9195 /* Karla-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A08985C4D09B43348521F6BB /* Karla-Light.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,7 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = marketspace/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-marketspace-marketspaceTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-marketspace-marketspaceTests.release.xcconfig"; path = "Target Support Files/Pods-marketspace-marketspaceTests/Pods-marketspace-marketspaceTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		A08985C4D09B43348521F6BB /* Karla-Light.ttf */ = {isa = PBXFileReference; name = "Karla-Light.ttf"; path = "../src/assets/fonts/Karla-Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,6 +154,7 @@
 			children = (
 				5FC5AA13DC0945CE94543A6D /* Karla-Bold.ttf */,
 				62FF1CF5A48E4024ABA4B6B6 /* Karla-Regular.ttf */,
+				A08985C4D09B43348521F6BB /* Karla-Light.ttf */,
 			);
 			name = Resources;
 			path = "";
@@ -266,6 +269,7 @@
 				94432580859A958903DB88E9 /* PrivacyInfo.xcprivacy in Resources */,
 				D688EA1A3744491F947B3BF7 /* Karla-Bold.ttf in Resources */,
 				FFA92A075B10474A81C48C19 /* Karla-Regular.ttf in Resources */,
+				4C3F0CDA8EF04C76854A9195 /* Karla-Light.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
