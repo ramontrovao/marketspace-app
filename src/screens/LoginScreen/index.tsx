@@ -2,6 +2,7 @@ import React from 'react';
 import * as S from './styles';
 import {Logo} from '../../assets/svg/Logo';
 import {TextInput} from '../../components/TextInput';
+import {Button} from '../../components/Button';
 
 export function LoginScreen() {
   return (
@@ -19,6 +20,8 @@ export function LoginScreen() {
         <S.FormContainer>
           <TextInput placeholder="E-mail" />
           <TextInput placeholder="Senha" />
+
+          <Button>Teste</Button>
         </S.FormContainer>
       </S.TopWrapper>
 
