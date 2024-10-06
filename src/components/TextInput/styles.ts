@@ -4,10 +4,15 @@ interface TextInputStyledProps {
   isFocused: boolean;
 }
 
+export const TextInputContainer = styled.View`
+  gap: 8px;
+`;
+
 export const TextInput = styled.TextInput<TextInputStyledProps>`
   width: 100%;
   min-height: 45px;
   padding: 12px 16px;
+  transition: 1s;
 
   background-color: ${({theme, isFocused}) =>
     isFocused ? theme.COLORS.WHITE : theme.COLORS.GRAY_7};
