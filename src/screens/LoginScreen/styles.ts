@@ -51,12 +51,14 @@ export const FormContainer = styled.View`
 
 export const BottomWrapper = styled.View`
   padding: 48px;
+
   justify-content: center;
   align-items: center;
   gap: 8px;
-  flex: 0.15;
+  flex: 0.2;
 `;
 
 export const SignUpTitle = styled(Text)`
   font-size: 14px;
+  margin-bottom: 16px;
 `;

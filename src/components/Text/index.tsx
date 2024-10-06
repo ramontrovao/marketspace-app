@@ -5,12 +5,18 @@ import * as S from './styles';
 
 interface TextProps extends Omit<BaseTextProps, 'color'> {
   color?: keyof typeof THEME.COLORS;
+  fontWeight?: keyof typeof THEME.FONT_WEIGHTS;
   children: ReactNode;
 }
 
-export function Text({children, color = 'BLACK', ...rest}: TextProps) {
+export function Text({
+  children,
+  fontWeight = 'REGULAR',
+  color = 'BLACK',
+  ...rest
+}: TextProps) {
   return (
-    <S.Text color={color} {...rest}>
+    <S.Text fontWeight={fontWeight} color={color} {...rest}>
       {children}
     </S.Text>
   );

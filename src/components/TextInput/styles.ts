@@ -14,5 +14,6 @@ export const TextInput = styled.TextInput<TextInputStyledProps>`
   border-width: ${({isFocused}) => (isFocused ? 1 : 0)}px;
   border-color: ${({theme}) => theme.COLORS.GRAY_3};
   color: ${({theme}) => theme.COLORS.GRAY_4};
+  font-family: 'Karla';
   border-radius: 6px;
 `;

@@ -21,12 +21,16 @@ export function LoginScreen() {
           <TextInput placeholder="E-mail" />
           <TextInput placeholder="Senha" />
 
-          <Button>Teste</Button>
+          <Button fontWeight="BOLD">Entrar</Button>
         </S.FormContainer>
       </S.TopWrapper>
 
       <S.BottomWrapper>
         <S.SignUpTitle>Ainda não tem acesso?</S.SignUpTitle>
+
+        <Button fontWeight="BOLD" variant="tertiary">
+          Criar uma conta
+        </Button>
       </S.BottomWrapper>
     </S.LoginContainer>
   );
