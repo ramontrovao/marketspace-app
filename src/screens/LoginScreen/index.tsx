@@ -9,27 +9,27 @@ import {zodResolver} from '@hookform/resolvers/zod';
 import {StatusBar} from 'react-native';
 import {THEME} from '../../styles/theme';
 
-export function LoginScreen() {
-  const loginFormSchema = z.object({
-    email: z
-      .string({message: 'Este campo é obrigatório.'})
-      .min(1, 'Este campo é obrigatório.')
-      .email('Digite um e-mail válido.'),
-    password: z
-      .string({message: 'Este campo é obrigatório.'})
-      .min(1, 'Este campo é obrigatório.'),
-  });
+const loginFormSchema = z.object({
+  email: z
+    .string({message: 'Este campo é obrigatório.'})
+    .min(1, 'Este campo é obrigatório.')
+    .email('Digite um e-mail válido.'),
+  password: z
+    .string({message: 'Este campo é obrigatório.'})
+    .min(1, 'Este campo é obrigatório.'),
+});
 
-  type TLoginFormSchema = z.infer<typeof loginFormSchema>;
+type TLoginFormSchema = z.infer<typeof loginFormSchema>;
 
-  function onSubmit(data: TLoginFormSchema) {
-    console.log(data);
-  }
-
+export function LoginScreen({navigation}) {
   const {control, handleSubmit} = useForm<TLoginFormSchema>({
     resolver: zodResolver(loginFormSchema),
     reValidateMode: 'onChange',
   });
+
+  function onSubmit(data: TLoginFormSchema) {
+    console.log(data);
+  }
 
   return (
     <>
@@ -94,7 +94,10 @@ export function LoginScreen() {
         <S.BottomWrapper>
           <S.SignUpTitle>Ainda não tem acesso?</S.SignUpTitle>
 
-          <Button fontWeight="BOLD" variant="tertiary">
+          <Button
+            onPress={() => navigation.navigate('Register')}
+            fontWeight="BOLD"
+            variant="tertiary">
             Criar uma conta
           </Button>
         </S.BottomWrapper>
