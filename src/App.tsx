@@ -5,9 +5,10 @@ import {THEME} from './styles/theme';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {RegisterScreen} from './screens/RegisterScreen';
+import {TStackParamList} from './types/navigation';
 
 function App(): React.JSX.Element {
-  const Stack = createNativeStackNavigator();
+  const Stack = createNativeStackNavigator<TStackParamList>();
 
   return (
     <ThemeProvider theme={THEME}>

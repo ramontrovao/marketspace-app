@@ -8,6 +8,8 @@ import {z} from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {StatusBar} from 'react-native';
 import {THEME} from '../../styles/theme';
+import {NativeStackScreenProps} from 'react-native-screens/lib/typescript/native-stack/types';
+import {TStackParamList} from '../../types/navigation';
 
 const loginFormSchema = z.object({
   email: z
@@ -21,7 +23,9 @@ const loginFormSchema = z.object({
 
 type TLoginFormSchema = z.infer<typeof loginFormSchema>;
 
-export function LoginScreen({navigation}) {
+export function LoginScreen({
+  navigation,
+}: NativeStackScreenProps<TStackParamList>) {
   const {control, handleSubmit} = useForm<TLoginFormSchema>({
     resolver: zodResolver(loginFormSchema),
     reValidateMode: 'onChange',

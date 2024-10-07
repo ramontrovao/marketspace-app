@@ -9,8 +9,12 @@ import {zodResolver} from '@hookform/resolvers/zod';
 import {ScrollView, StatusBar} from 'react-native';
 import {Masks, formatWithMask} from 'react-native-mask-input';
 import {THEME} from '../../styles/theme';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {TStackParamList} from '../../types/navigation';
 
-export function RegisterScreen({navigation}) {
+export function RegisterScreen({
+  navigation,
+}: NativeStackScreenProps<TStackParamList>) {
   const registerFormSchema = z
     .object({
       name: z
