@@ -7,7 +7,7 @@ interface TextInputProps extends BaseTextInputProps {
   errorMessage?: string;
 }
 
-export function TextInput({errorMessage, ...rest}: TextInputProps) {
+export function TextInput({errorMessage, onBlur, ...rest}: TextInputProps) {
   const [isFocused, setIsFocused] = useState(false);
 
   return (
@@ -15,13 +15,17 @@ export function TextInput({errorMessage, ...rest}: TextInputProps) {
       <S.TextInput
         isFocused={isFocused}
         onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
+        onBlur={e => {
+          setIsFocused(false);
+
+          if (typeof onBlur === 'function') {
+            onBlur(e);
+          }
+        }}
         {...rest}
       />
 
-      {errorMessage && (
-        <Text color="RED_LIGHT">Ocorreu um erro, digite corretamente.</Text>
-      )}
+      {!!errorMessage && <Text color="RED_LIGHT">{errorMessage}</Text>}
     </S.TextInputContainer>
   );
 }

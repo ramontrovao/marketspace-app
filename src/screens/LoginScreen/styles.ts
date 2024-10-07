@@ -2,6 +2,7 @@ import styled from 'styled-components/native';
 import {Text} from '../../components/Text';
 
 export const LoginContainer = styled.SafeAreaView`
+  background-color: ${({theme}) => theme.COLORS.GRAY_7};
   flex: 1;
 `;
 
@@ -10,9 +11,9 @@ export const TopWrapper = styled.View`
   justify-content: center;
   align-items: center;
 
+  background-color: ${({theme}) => theme.COLORS.GRAY_6};
   border-bottom-left-radius: 24px;
   border-bottom-right-radius: 24px;
-  background-color: ${({theme}) => theme.COLORS.GRAY_6};
 `;
 
 export const LogoContainer = styled.View`
@@ -56,6 +57,8 @@ export const BottomWrapper = styled.View`
   align-items: center;
   gap: 8px;
   flex: 0.2;
+
+  background-color: ${({theme}) => theme.COLORS.GRAY_7};
 `;
 
 export const SignUpTitle = styled(Text)`
