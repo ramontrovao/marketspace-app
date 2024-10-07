@@ -13,8 +13,11 @@ export function LoginScreen() {
   const loginFormSchema = z.object({
     email: z
       .string({message: 'Este campo é obrigatório.'})
+      .min(1, 'Este campo é obrigatório.')
       .email('Digite um e-mail válido.'),
-    password: z.string({message: 'Este campo é obrigatório.'}),
+    password: z
+      .string({message: 'Este campo é obrigatório.'})
+      .min(1, 'Este campo é obrigatório.'),
   });
 
   type TLoginFormSchema = z.infer<typeof loginFormSchema>;
@@ -30,7 +33,11 @@ export function LoginScreen() {
 
   return (
     <>
-      <StatusBar translucent backgroundColor={THEME.COLORS.GRAY_6} />
+      <StatusBar
+        translucent
+        backgroundColor={THEME.COLORS.GRAY_6}
+        barStyle="dark-content"
+      />
 
       <S.LoginContainer>
         <S.TopWrapper>
@@ -71,8 +78,8 @@ export function LoginScreen() {
                   onChangeText={onChange}
                   onBlur={onBlur}
                   value={value}
-                  secureTextEntry
                   errorMessage={error?.message}
+                  variant="secure"
                   placeholder="Senha"
                 />
               )}
