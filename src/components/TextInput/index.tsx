@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
-import {TextInputProps as BaseTextInputProps} from 'react-native';
+import {MaskInputProps} from 'react-native-mask-input';
 import * as S from './styles';
 import {Text} from '../Text';
 import {Eye, EyeClosed} from 'phosphor-react-native';
 import {THEME} from '../../styles/theme';
 
-interface TextInputProps extends BaseTextInputProps {
+interface TextInputProps extends MaskInputProps {
   errorMessage?: string;
   variant?: 'normal' | 'secure';
 }

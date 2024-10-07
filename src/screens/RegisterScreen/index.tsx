@@ -7,32 +7,53 @@ import {Controller, useForm} from 'react-hook-form';
 import {z} from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {ScrollView, StatusBar} from 'react-native';
+import {Masks, formatWithMask} from 'react-native-mask-input';
 import {THEME} from '../../styles/theme';
 
-export function RegisterScreen() {
-  const registerFormSchema = z.object({
-    name: z
-      .string({message: 'Este campo é obrigatório.'})
-      .min(1, 'Digite um nome válido.'),
-    email: z
-      .string({message: 'Este campo é obrigatório.'})
-      .min(1, 'Este campo é obrigatório.')
-      .email('Digite um e-mail válido.'),
-    phone: z
-      .string({message: 'Este campo é obrigatório.'})
-      .min(8, 'Digite um telefone válido.')
-      .max(8, 'Digite um telefone válido.'),
-    password: z
-      .string({message: 'Este campo é obrigatório.'})
-      .min(1, 'Este campo é obrigatório.'),
-    confirm_password: z
-      .string({message: 'Este campo é obrigatório.'})
-      .min(1, 'Este campo é obrigatório.'),
-  });
+export function RegisterScreen({navigation}) {
+  const registerFormSchema = z
+    .object({
+      name: z
+        .string({message: 'Este campo é obrigatório.'})
+        .min(1, 'Digite um nome válido.'),
+      email: z
+        .string({message: 'Este campo é obrigatório.'})
+        .min(1, 'Este campo é obrigatório.')
+        .email('Digite um e-mail válido.'),
+      phone: z
+        .string({message: 'Este campo é obrigatório.'})
+        .regex(/^\([1-9]{2}\) (?:[2-8]|9[0-9])[0-9]{3}-[0-9]{4}$/, {
+          message: 'Digite um telefone válido.',
+        }),
+      password: z
+        .string({message: 'Este campo é obrigatório.'})
+        .min(8, 'Sua senha deve conter ao menos 8 caracteres.')
+        .regex(/.*[a-zA-Z].*/, 'Sua senha deve conter ao menos 1 letra.')
+        .regex(/(?=.*\d)/, 'Sua senha deve conter ao menos 1 número.'),
+      confirm_password: z
+        .string({message: 'Este campo é obrigatório.'})
+        .min(1, 'Este campo é obrigatório.'),
+    })
+    .superRefine(({confirm_password, password}, context) => {
+      if (confirm_password !== password) {
+        context.addIssue({
+          code: 'custom',
+          message: 'As senhas não coincidem.',
+          fatal: true,
+          path: ['confirm_password'],
+        });
+      }
+    });
 
   type TRegisterFormSchema = z.infer<typeof registerFormSchema>;
 
-  function onSubmit(data: TRegisterFormSchema) {
+  function onSubmit({phone, ...rest}: TRegisterFormSchema) {
+    const {unmasked: unmaskedPhone} = formatWithMask({
+      text: phone,
+      mask: Masks.BRL_PHONE,
+    });
+    const data = {...rest, phone: unmaskedPhone};
+
     console.log(data);
   }
 
@@ -105,6 +126,7 @@ export function RegisterScreen() {
                   field: {onChange, onBlur, value},
                 }) => (
                   <TextInput
+                    mask={Masks.BRL_PHONE}
                     onChangeText={onChange}
                     onBlur={onBlur}
                     value={value}
@@ -160,7 +182,10 @@ export function RegisterScreen() {
           <S.BottomWrapper>
             <S.SignUpTitle>Já tem uma conta?</S.SignUpTitle>
 
-            <Button fontWeight="BOLD" variant="tertiary">
+            <Button
+              onPress={() => navigation.navigate('Login')}
+              fontWeight="BOLD"
+              variant="tertiary">
               Ir para o login
             </Button>
           </S.BottomWrapper>
