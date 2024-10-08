@@ -8,20 +8,14 @@ export const RegisterContainer = styled.SafeAreaView`
 
 export const TopWrapper = styled.View`
   flex: 1;
-  justify-content: center;
-  align-items: center;
 
   background-color: ${({theme}) => theme.COLORS.GRAY_6};
-  border-bottom-left-radius: 24px;
-  border-bottom-right-radius: 24px;
 `;
 
 export const LogoContainer = styled.View`
   padding: 0 48px;
-  margin-top: 48px;
+  margin-top: 24px;
 
-  justify-content: center;
-  align-items: center;
   gap: 8px;
 `;
 
@@ -63,6 +57,8 @@ export const BottomWrapper = styled.View`
   flex: 0.2;
 
   background-color: ${({theme}) => theme.COLORS.GRAY_7};
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
 `;
 
 export const SignUpTitle = styled(Text)`

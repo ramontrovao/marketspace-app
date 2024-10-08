@@ -1,6 +1,5 @@
 import React from 'react';
 import * as S from './styles';
-import {Logo} from '../../assets/svg/Logo';
 import {TextInput} from '../../components/TextInput';
 import {Button} from '../../components/Button';
 import {Controller, useForm} from 'react-hook-form';
@@ -11,6 +10,7 @@ import {Masks, formatWithMask} from 'react-native-mask-input';
 import {THEME} from '../../styles/theme';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {TStackParamList} from '../../types/navigation';
+import {BackHeader} from '../../components/BackHeader';
 
 export function RegisterScreen({
   navigation,
@@ -75,11 +75,10 @@ export function RegisterScreen({
       />
 
       <S.RegisterContainer>
+        <BackHeader />
         <ScrollView>
           <S.TopWrapper>
             <S.LogoContainer>
-              <Logo width={60} height={40} />
-
               <S.LogoTitleContainer>
                 <S.LogoTitle>Boas vindas!</S.LogoTitle>
                 <S.LogoSubtitle>
