@@ -7,6 +7,8 @@ export const LoginContainer = styled.SafeAreaView`
 `;
 
 export const TopWrapper = styled.View`
+  padding-top: 48px;
+
   flex: 1;
   justify-content: center;
   align-items: center;

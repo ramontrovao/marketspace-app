@@ -6,7 +6,7 @@ import {Button} from '../../components/Button';
 import {Controller, useForm} from 'react-hook-form';
 import {z} from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod';
-import {StatusBar} from 'react-native';
+import {ScrollView, StatusBar} from 'react-native';
 import {THEME} from '../../styles/theme';
 import {NativeStackScreenProps} from 'react-native-screens/lib/typescript/native-stack/types';
 import {TStackParamList} from '../../types/navigation';
@@ -44,67 +44,69 @@ export function LoginScreen({
       />
 
       <S.LoginContainer>
-        <S.TopWrapper>
-          <S.LogoContainer>
-            <Logo width={80} height={50} />
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <S.TopWrapper>
+            <S.LogoContainer>
+              <Logo width={80} height={50} />
 
-            <S.LogoTitleContainer>
-              <S.LogoTitle>marketspace</S.LogoTitle>
-              <S.LogoSubtitle>Seu espaço de compra e venda</S.LogoSubtitle>
-            </S.LogoTitleContainer>
-          </S.LogoContainer>
+              <S.LogoTitleContainer>
+                <S.LogoTitle>marketspace</S.LogoTitle>
+                <S.LogoSubtitle>Seu espaço de compra e venda</S.LogoSubtitle>
+              </S.LogoTitleContainer>
+            </S.LogoContainer>
 
-          <S.FormContainer>
-            <Controller
-              control={control}
-              name="email"
-              render={({
-                fieldState: {error},
-                field: {onChange, onBlur, value},
-              }) => (
-                <TextInput
-                  onChangeText={onChange}
-                  onBlur={onBlur}
-                  value={value}
-                  errorMessage={error?.message}
-                  placeholder="E-mail"
-                />
-              )}
-            />
-            <Controller
-              control={control}
-              name="password"
-              render={({
-                fieldState: {error},
-                field: {onChange, onBlur, value},
-              }) => (
-                <TextInput
-                  onChangeText={onChange}
-                  onBlur={onBlur}
-                  value={value}
-                  errorMessage={error?.message}
-                  variant="secure"
-                  placeholder="Senha"
-                />
-              )}
-            />
+            <S.FormContainer>
+              <Controller
+                control={control}
+                name="email"
+                render={({
+                  fieldState: {error},
+                  field: {onChange, onBlur, value},
+                }) => (
+                  <TextInput
+                    onChangeText={onChange}
+                    onBlur={onBlur}
+                    value={value}
+                    errorMessage={error?.message}
+                    placeholder="E-mail"
+                  />
+                )}
+              />
+              <Controller
+                control={control}
+                name="password"
+                render={({
+                  fieldState: {error},
+                  field: {onChange, onBlur, value},
+                }) => (
+                  <TextInput
+                    onChangeText={onChange}
+                    onBlur={onBlur}
+                    value={value}
+                    errorMessage={error?.message}
+                    variant="secure"
+                    placeholder="Senha"
+                  />
+                )}
+              />
 
-            <Button onPress={handleSubmit(onSubmit)} fontWeight="BOLD">
-              Entrar
+              <Button onPress={handleSubmit(onSubmit)} fontWeight="BOLD">
+                Entrar
+              </Button>
+            </S.FormContainer>
+          </S.TopWrapper>
+
+          <S.BottomWrapper>
+            <S.SignUpTitle>Ainda não tem acesso?</S.SignUpTitle>
+
+            <Button
+              onPress={() => navigation.navigate('Register')}
+              fontWeight="BOLD"
+              variant="tertiary">
+              Criar uma conta
             </Button>
-          </S.FormContainer>
-        </S.TopWrapper>
-
-        <S.BottomWrapper>
-          <S.SignUpTitle>Ainda não tem acesso?</S.SignUpTitle>
-
-          <Button
-            onPress={() => navigation.navigate('Register')}
-            fontWeight="BOLD"
-            variant="tertiary">
-            Criar uma conta
-          </Button>
-        </S.BottomWrapper>
+          </S.BottomWrapper>
+        </ScrollView>
       </S.LoginContainer>
     </>
   );
