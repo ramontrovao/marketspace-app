@@ -4,17 +4,27 @@ import {TStackParamList} from './types/navigation';
 import {LoginScreen} from './screens/LoginScreen';
 import {RegisterScreen} from './screens/RegisterScreen';
 import {TabNavigator} from './TabNavigator';
+import {useAuthentication} from './contexts/AuthenticationContext';
 
 const Stack = createNativeStackNavigator<TStackParamList>();
 
 export function StackNavigator() {
+  const {isAuthenticated} = useAuthentication();
+
   return (
     <Stack.Navigator
       initialRouteName="Login"
       screenOptions={{headerShown: false}}>
-      <Stack.Screen name="Login" component={LoginScreen} />
-      <Stack.Screen name="Register" component={RegisterScreen} />
-      <Stack.Screen name="TabNavigator" component={TabNavigator} />
+      {!isAuthenticated && (
+        <>
+          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="Register" component={RegisterScreen} />
+        </>
+      )}
+
+      {isAuthenticated && (
+        <Stack.Screen name="TabNavigator" component={TabNavigator} />
+      )}
     </Stack.Navigator>
   );
 }

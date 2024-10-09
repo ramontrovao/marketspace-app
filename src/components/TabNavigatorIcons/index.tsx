@@ -3,6 +3,7 @@ import {House, SignOut, Tag} from 'phosphor-react-native';
 import {Alert} from 'react-native';
 import {THEME} from '../../styles/theme';
 import * as S from './styles';
+import {useAuthentication} from '../../contexts/AuthenticationContext';
 
 interface TabNavigatorIconProps {
   focused: boolean;
@@ -11,15 +12,16 @@ interface TabNavigatorIconProps {
 }
 
 export function LogoutButton() {
+  const {logout} = useAuthentication();
+
   return (
     <S.LogoutButtonContainer
       onPress={() => {
         Alert.alert('Encerrar sessão', 'Deseja encerrar sua sessão?', [
           {
             text: 'Não',
-            onPress: () => console.log('Cancel Pressed'),
           },
-          {text: 'Sim', onPress: () => console.log('OK Pressed')},
+          {text: 'Sim', onPress: () => logout()},
         ]);
       }}>
       <SignOut color={THEME.COLORS.RED_LIGHT} size={24} />
