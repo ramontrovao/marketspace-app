@@ -33,6 +33,7 @@ export function LoginScreen({
 
   function onSubmit(data: TLoginFormSchema) {
     console.log(data);
+    navigation.navigate('TabNavigator');
   }
 
   return (
