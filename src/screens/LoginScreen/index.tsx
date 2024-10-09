@@ -10,6 +10,7 @@ import {ScrollView, StatusBar} from 'react-native';
 import {THEME} from '../../styles/theme';
 import {NativeStackScreenProps} from 'react-native-screens/lib/typescript/native-stack/types';
 import {TStackParamList} from '../../types/navigation';
+import {useAuthentication} from '../../contexts/AuthenticationContext';
 
 const loginFormSchema = z.object({
   email: z
@@ -26,6 +27,7 @@ type TLoginFormSchema = z.infer<typeof loginFormSchema>;
 export function LoginScreen({
   navigation,
 }: NativeStackScreenProps<TStackParamList>) {
+  const {login} = useAuthentication();
   const {control, handleSubmit} = useForm<TLoginFormSchema>({
     resolver: zodResolver(loginFormSchema),
     reValidateMode: 'onChange',
@@ -33,6 +35,7 @@ export function LoginScreen({
 
   function onSubmit(data: TLoginFormSchema) {
     console.log(data);
+    login();
   }
 
   return (
