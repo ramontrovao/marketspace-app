@@ -4,7 +4,7 @@ import {StatusBar} from 'react-native';
 import {THEME} from '../../styles/theme';
 import {Text} from '../../components/Text';
 
-export function HomeScreen() {
+export function ProductListingScreen() {
   return (
     <>
       <StatusBar
@@ -13,9 +13,9 @@ export function HomeScreen() {
         barStyle="dark-content"
       />
 
-      <S.HomeContainer>
-        <Text>Home</Text>
-      </S.HomeContainer>
+      <S.ProductListingContainer>
+        <Text>ProductListing</Text>
+      </S.ProductListingContainer>
     </>
   );
 }
