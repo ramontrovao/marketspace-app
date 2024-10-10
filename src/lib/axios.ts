@@ -7,7 +7,7 @@ export const api = axios.create({
 });
 
 api.interceptors.response.use(undefined, error => {
-  if (error.response.data) {
+  if (error.response?.data) {
     throw new AppError(error);
   }
 

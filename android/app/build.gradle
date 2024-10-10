@@ -79,7 +79,8 @@ android {
 
     namespace "com.marketspace"
     defaultConfig {
-        applicationId "com.marketspace"
+        applicationId "com.marketspace"`
+        vectorDrawables.useSupportLibrary = true
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
