@@ -11,6 +11,7 @@ import {THEME} from '../../styles/theme';
 import {NativeStackScreenProps} from 'react-native-screens/lib/typescript/native-stack/types';
 import {TStackParamList} from '../../types/navigation';
 import {useAuthentication} from '../../contexts/AuthenticationContext';
+import {Text} from '../../components/Text';
 
 const loginFormSchema = z.object({
   email: z
@@ -27,16 +28,17 @@ type TLoginFormSchema = z.infer<typeof loginFormSchema>;
 export function LoginScreen({
   navigation,
 }: NativeStackScreenProps<TStackParamList>) {
-  const {login} = useAuthentication();
+  const {login, isLogging, loginError} = useAuthentication();
   const {control, handleSubmit} = useForm<TLoginFormSchema>({
     resolver: zodResolver(loginFormSchema),
     reValidateMode: 'onChange',
   });
 
-  function onSubmit(data: TLoginFormSchema) {
-    console.log(data);
-    login();
+  async function onSubmit(data: TLoginFormSchema) {
+    await login(data);
   }
+
+  console.log({loginError: loginError?.response});
 
   return (
     <>
@@ -93,7 +95,14 @@ export function LoginScreen({
                 )}
               />
 
-              <Button onPress={handleSubmit(onSubmit)} fontWeight="BOLD">
+              <Text color="RED_LIGHT">
+                {loginError?.response?.data?.message}
+              </Text>
+
+              <Button
+                isLoading={isLogging}
+                onPress={handleSubmit(onSubmit)}
+                fontWeight="BOLD">
                 Entrar
               </Button>
             </S.FormContainer>

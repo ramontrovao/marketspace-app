@@ -4,16 +4,21 @@ import {THEME} from './styles/theme';
 import {NavigationContainer} from '@react-navigation/native';
 import {StackNavigator} from './StackNavigator';
 import {AuthenticationContextProvider} from './contexts/AuthenticationContext';
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
 
 function App(): React.JSX.Element {
   return (
-    <ThemeProvider theme={THEME}>
-      <NavigationContainer>
-        <AuthenticationContextProvider>
-          <StackNavigator />
-        </AuthenticationContextProvider>
-      </NavigationContainer>
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider theme={THEME}>
+        <NavigationContainer>
+          <AuthenticationContextProvider>
+            <StackNavigator />
+          </AuthenticationContextProvider>
+        </NavigationContainer>
+      </ThemeProvider>
+    </QueryClientProvider>
   );
 }
 

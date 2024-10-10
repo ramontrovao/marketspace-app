@@ -9,6 +9,7 @@ export const TouchableOpacity = styled.TouchableOpacity<TouchableOpacityStyledPr
   background-color: ${({theme, variant}) =>
     theme.COLORS[BUTTON_VARIANTS[variant].backgroundColor]};
   padding: 16px;
+  min-height: 52px;
   width: 100%;
   border-radius: 8px;
   justify-content: center;

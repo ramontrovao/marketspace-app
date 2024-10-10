@@ -1,8 +1,13 @@
 import React, {createContext, ReactNode, useContext, useState} from 'react';
+import {useLogin} from '../hooks/http/useLogin';
+import {LoginService} from '../types/http/authentication';
+import {AxiosError} from 'axios';
 
 type TAuthenticationContextValues = {
   isAuthenticated: boolean;
-  login: () => void;
+  isLogging: boolean;
+  loginError?: AxiosError | null;
+  login: (params: LoginService.Params) => Promise<void>;
   logout: () => void;
 };
 
@@ -15,7 +20,17 @@ export function AuthenticationContextProvider({
 }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  function login() {
+  const {
+    login: loginMutation,
+    isPending: isLogging,
+    error: loginError,
+  } = useLogin();
+
+  async function login(params: LoginService.Params) {
+    const result = await loginMutation(params);
+
+    console.log(result.data);
+
     setIsAuthenticated(true);
   }
 
@@ -29,6 +44,8 @@ export function AuthenticationContextProvider({
         isAuthenticated,
         login,
         logout,
+        isLogging,
+        loginError,
       }}>
       {children}
     </AuthenticationContext.Provider>
