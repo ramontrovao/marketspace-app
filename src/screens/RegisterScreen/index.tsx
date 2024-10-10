@@ -11,11 +11,8 @@ import {THEME} from '../../styles/theme';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {TStackParamList} from '../../types/navigation';
 import {BackHeader} from '../../components/BackHeader';
-import {
-  ImagePickerResponse,
-  launchImageLibrary,
-} from 'react-native-image-picker';
 import {PencilSimpleLine, User} from 'phosphor-react-native';
+import ImageCropPicker, { ImageOrVideo } from 'react-native-image-crop-picker';
 
 const registerFormSchema = z
   .object({
@@ -57,7 +54,7 @@ export function RegisterScreen({
   navigation,
 }: NativeStackScreenProps<TStackParamList>) {
   const [profileImageSelected, setProfileImageSelected] = useState<
-    ImagePickerResponse | undefined
+    ImageOrVideo | undefined
   >();
 
   function onSubmit({phone, ...rest}: TRegisterFormSchema) {
@@ -98,19 +95,20 @@ export function RegisterScreen({
             <S.FormContainer>
               <S.ProfileTouchable
                 onPress={async () => {
-                  const image = await launchImageLibrary({
-                    mediaType: 'photo',
-                  });
-
+                  const image = await ImageCropPicker.openPicker({
+                    width: 300,
+                    height: 400,
+                    cropping: true
+                  })
                   setProfileImageSelected(image);
                 }}>
-                {profileImageSelected && profileImageSelected.assets?.[0] && (
+                {profileImageSelected && profileImageSelected.path && (
                   <S.ProfileImageContainer
-                    source={{uri: profileImageSelected.assets[0].uri}}
+                    source={{uri: profileImageSelected.path}}
                   />
                 )}
                 {(!profileImageSelected ||
-                  !profileImageSelected.assets?.[0]) && (
+                  !profileImageSelected.path) && (
                   <S.SelectProfileImageContainer>
                     <User weight="bold" size={48} color={THEME.COLORS.GRAY_4} />
                   </S.SelectProfileImageContainer>
