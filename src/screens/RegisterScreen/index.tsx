@@ -57,8 +57,6 @@ export function RegisterScreen({
       mask: Masks.BRL_PHONE,
     });
     const data = {...rest, phone: unmaskedPhone};
-
-    console.log(data);
   }
 
   const {control, handleSubmit} = useForm<TRegisterFormSchema>({

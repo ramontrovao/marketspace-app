@@ -12,6 +12,7 @@ import {NativeStackScreenProps} from 'react-native-screens/lib/typescript/native
 import {TStackParamList} from '../../types/navigation';
 import {useAuthentication} from '../../contexts/AuthenticationContext';
 import {Text} from '../../components/Text';
+import {AppError} from '../../services/http/appError';
 
 const loginFormSchema = z.object({
   email: z
@@ -37,8 +38,6 @@ export function LoginScreen({
   async function onSubmit(data: TLoginFormSchema) {
     await login(data);
   }
-
-  console.log({loginError: loginError?.response});
 
   return (
     <>
@@ -95,9 +94,9 @@ export function LoginScreen({
                 )}
               />
 
-              <Text color="RED_LIGHT">
-                {loginError?.response?.data?.message}
-              </Text>
+              {loginError instanceof AppError && (
+                <Text color="RED_LIGHT">{loginError.message}</Text>
+              )}
 
               <Button
                 isLoading={isLogging}

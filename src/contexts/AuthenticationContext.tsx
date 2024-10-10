@@ -2,11 +2,12 @@ import React, {createContext, ReactNode, useContext, useState} from 'react';
 import {useLogin} from '../hooks/http/useLogin';
 import {LoginService} from '../types/http/authentication';
 import {AxiosError} from 'axios';
+import {AppError} from '../services/http/appError';
 
 type TAuthenticationContextValues = {
   isAuthenticated: boolean;
   isLogging: boolean;
-  loginError?: AxiosError | null;
+  loginError?: AxiosError | AppError | null;
   login: (params: LoginService.Params) => Promise<void>;
   logout: () => void;
 };
@@ -27,9 +28,10 @@ export function AuthenticationContextProvider({
   } = useLogin();
 
   async function login(params: LoginService.Params) {
+    // TODO: integrate JWT with MMKV
     const result = await loginMutation(params);
 
-    console.log(result.data);
+    console.log(result);
 
     setIsAuthenticated(true);
   }
