@@ -24,7 +24,12 @@ export function Button({
 }: TouchableOpacityProps) {
   return (
     <S.TouchableOpacity variant={variant} {...rest}>
-      {isLoading && <ActivityIndicator color={THEME.COLORS.WHITE} size={12} />}
+      {isLoading && (
+        <ActivityIndicator
+          color={BUTTON_VARIANTS[variant].textColor}
+          size={12}
+        />
+      )}
 
       {!isLoading && (
         <Text
