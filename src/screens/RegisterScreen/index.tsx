@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import * as S from './styles';
 import {TextInput} from '../../components/TextInput';
 import {Button} from '../../components/Button';
@@ -11,45 +11,54 @@ import {THEME} from '../../styles/theme';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {TStackParamList} from '../../types/navigation';
 import {BackHeader} from '../../components/BackHeader';
+import {
+  ImagePickerResponse,
+  launchImageLibrary,
+} from 'react-native-image-picker';
+import {PencilSimpleLine, User} from 'phosphor-react-native';
+
+const registerFormSchema = z
+  .object({
+    name: z
+      .string({message: 'Este campo é obrigatório.'})
+      .min(1, 'Digite um nome válido.'),
+    email: z
+      .string({message: 'Este campo é obrigatório.'})
+      .min(1, 'Este campo é obrigatório.')
+      .email('Digite um e-mail válido.'),
+    phone: z
+      .string({message: 'Este campo é obrigatório.'})
+      .regex(/^\([1-9]{2}\) (?:[2-8]|9[0-9])[0-9]{3}-[0-9]{4}$/, {
+        message: 'Digite um telefone válido.',
+      }),
+    password: z
+      .string({message: 'Este campo é obrigatório.'})
+      .min(8, 'Sua senha deve conter ao menos 8 caracteres.')
+      .regex(/.*[a-zA-Z].*/, 'Sua senha deve conter ao menos 1 letra.')
+      .regex(/(?=.*\d)/, 'Sua senha deve conter ao menos 1 número.'),
+    confirm_password: z
+      .string({message: 'Este campo é obrigatório.'})
+      .min(1, 'Este campo é obrigatório.'),
+  })
+  .superRefine(({confirm_password, password}, context) => {
+    if (confirm_password !== password) {
+      context.addIssue({
+        code: 'custom',
+        message: 'As senhas não coincidem.',
+        fatal: true,
+        path: ['confirm_password'],
+      });
+    }
+  });
+
+type TRegisterFormSchema = z.infer<typeof registerFormSchema>;
 
 export function RegisterScreen({
   navigation,
 }: NativeStackScreenProps<TStackParamList>) {
-  const registerFormSchema = z
-    .object({
-      name: z
-        .string({message: 'Este campo é obrigatório.'})
-        .min(1, 'Digite um nome válido.'),
-      email: z
-        .string({message: 'Este campo é obrigatório.'})
-        .min(1, 'Este campo é obrigatório.')
-        .email('Digite um e-mail válido.'),
-      phone: z
-        .string({message: 'Este campo é obrigatório.'})
-        .regex(/^\([1-9]{2}\) (?:[2-8]|9[0-9])[0-9]{3}-[0-9]{4}$/, {
-          message: 'Digite um telefone válido.',
-        }),
-      password: z
-        .string({message: 'Este campo é obrigatório.'})
-        .min(8, 'Sua senha deve conter ao menos 8 caracteres.')
-        .regex(/.*[a-zA-Z].*/, 'Sua senha deve conter ao menos 1 letra.')
-        .regex(/(?=.*\d)/, 'Sua senha deve conter ao menos 1 número.'),
-      confirm_password: z
-        .string({message: 'Este campo é obrigatório.'})
-        .min(1, 'Este campo é obrigatório.'),
-    })
-    .superRefine(({confirm_password, password}, context) => {
-      if (confirm_password !== password) {
-        context.addIssue({
-          code: 'custom',
-          message: 'As senhas não coincidem.',
-          fatal: true,
-          path: ['confirm_password'],
-        });
-      }
-    });
-
-  type TRegisterFormSchema = z.infer<typeof registerFormSchema>;
+  const [profileImageSelected, setProfileImageSelected] = useState<
+    ImagePickerResponse | undefined
+  >();
 
   function onSubmit({phone, ...rest}: TRegisterFormSchema) {
     const {unmasked: unmaskedPhone} = formatWithMask({
@@ -87,6 +96,31 @@ export function RegisterScreen({
             </S.LogoContainer>
 
             <S.FormContainer>
+              <S.ProfileTouchable
+                onPress={async () => {
+                  const image = await launchImageLibrary({
+                    mediaType: 'photo',
+                  });
+
+                  setProfileImageSelected(image);
+                }}>
+                {profileImageSelected && profileImageSelected.assets?.[0] && (
+                  <S.ProfileImageContainer
+                    source={{uri: profileImageSelected.assets[0].uri}}
+                  />
+                )}
+                {(!profileImageSelected ||
+                  !profileImageSelected.assets?.[0]) && (
+                  <S.SelectProfileImageContainer>
+                    <User weight="bold" size={48} color={THEME.COLORS.GRAY_4} />
+                  </S.SelectProfileImageContainer>
+                )}
+
+                <S.ProfileImagePencilContainer>
+                  <PencilSimpleLine size={16} color={THEME.COLORS.WHITE} />
+                </S.ProfileImagePencilContainer>
+              </S.ProfileTouchable>
+
               <Controller
                 control={control}
                 name="name"

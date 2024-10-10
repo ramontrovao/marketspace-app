@@ -19,6 +19,54 @@ export const LogoContainer = styled.View`
   gap: 8px;
 `;
 
+export const ProfileTouchable = styled.TouchableOpacity`
+  position: relative;
+  max-width: 100;
+
+  align-self: center;
+`;
+
+export const SelectProfileImageContainer = styled.View`
+  width: 88px;
+  height: 88px;
+
+  align-self: center;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 999px;
+  border-width: 3px;
+  border-style: solid;
+  border-color: ${props => props.theme.COLORS.BLUE_LIGHT};
+  background-color: ${props => props.theme.COLORS.GRAY_5};
+`;
+
+export const ProfileImageContainer = styled.Image`
+  width: 88px;
+  height: 88px;
+
+  align-self: center;
+
+  border-radius: 999px;
+  border-width: 3px;
+  border-style: solid;
+  border-color: ${props => props.theme.COLORS.BLUE_LIGHT};
+`;
+
+export const ProfileImagePencilContainer = styled.View`
+  position: absolute;
+  right: -10px;
+  bottom: 0;
+  justify-content: center;
+  align-items: center;
+
+  width: 40px;
+  height: 40px;
+
+  background-color: ${props => props.theme.COLORS.BLUE_LIGHT};
+  border-radius: 999px;
+`;
+
 export const LogoTitleContainer = styled.View`
   justify-content: center;
   align-items: center;
