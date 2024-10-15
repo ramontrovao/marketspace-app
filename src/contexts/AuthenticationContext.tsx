@@ -1,14 +1,18 @@
 import React, {createContext, ReactNode, useContext, useState} from 'react';
 import {useLogin} from '../hooks/http/useLogin';
-import {LoginService} from '../types/http/authentication';
+import {LoginService, RegisterService} from '../types/http/authentication';
 import {AxiosError} from 'axios';
 import {AppError} from '../services/http/appError';
+import {useRegister} from '../hooks/http/useRegister';
 
 type TAuthenticationContextValues = {
   isAuthenticated: boolean;
   isLogging: boolean;
   loginError?: AxiosError | AppError | null;
   login: (params: LoginService.Params) => Promise<void>;
+  register: (params: RegisterService.Params) => Promise<void>;
+  registerError?: AxiosError | AppError | null;
+  isRegistering: boolean;
   logout: () => void;
 };
 
@@ -22,6 +26,12 @@ export function AuthenticationContextProvider({
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const {
+    register: registerMutation,
+    isPending: isRegistering,
+    error: registerError,
+  } = useRegister();
+
+  const {
     login: loginMutation,
     isPending: isLogging,
     error: loginError,
@@ -31,7 +41,12 @@ export function AuthenticationContextProvider({
     // TODO: integrate JWT with MMKV
     const result = await loginMutation(params);
 
-    console.log(result);
+    setIsAuthenticated(true);
+  }
+
+  async function register(params: RegisterService.Params) {
+    // TODO: integrate JWT with MMKV
+    const result = await registerMutation(params);
 
     setIsAuthenticated(true);
   }
@@ -48,6 +63,9 @@ export function AuthenticationContextProvider({
         logout,
         isLogging,
         loginError,
+        register,
+        registerError,
+        isRegistering,
       }}>
       {children}
     </AuthenticationContext.Provider>

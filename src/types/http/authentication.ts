@@ -12,3 +12,9 @@ export namespace LoginService {
     refresh_token: string;
   };
 }
+
+export namespace RegisterService {
+  export type Params = FormData;
+
+  export type Result = undefined;
+}

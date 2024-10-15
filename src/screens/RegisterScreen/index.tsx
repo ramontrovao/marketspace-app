@@ -13,6 +13,9 @@ import {TStackParamList} from '../../types/navigation';
 import {BackHeader} from '../../components/BackHeader';
 import {PencilSimpleLine, User} from 'phosphor-react-native';
 import ImageCropPicker, {ImageOrVideo} from 'react-native-image-crop-picker';
+import {useAuthentication} from '../../contexts/AuthenticationContext';
+import {AppError} from '../../services/http/appError';
+import {Text} from '../../components/Text';
 
 const registerFormSchema = z
   .object({
@@ -57,12 +60,31 @@ export function RegisterScreen({
     ImageOrVideo | undefined
   >();
 
-  function onSubmit({phone, ...rest}: TRegisterFormSchema) {
+  const {register, registerError, isRegistering} = useAuthentication();
+
+  async function onSubmit({phone, ...rest}: TRegisterFormSchema) {
     const {unmasked: unmaskedPhone} = formatWithMask({
       text: phone,
       mask: Masks.BRL_PHONE,
     });
-    const data = {...rest, phone: unmaskedPhone};
+    const {avatar, email, name, password, tel} = {
+      ...rest,
+      avatar: {
+        type: profileImageSelected?.mime,
+        uri: profileImageSelected?.path,
+        name: profileImageSelected?.path.split('/').pop(),
+      },
+      tel: unmaskedPhone,
+    };
+
+    const formData = new FormData();
+    formData.append('avatar', avatar);
+    formData.append('name', name);
+    formData.append('email', email);
+    formData.append('tel', tel);
+    formData.append('password', password);
+
+    await register(formData);
   }
 
   const {control, handleSubmit} = useForm<TRegisterFormSchema>({
@@ -99,6 +121,7 @@ export function RegisterScreen({
                   const image = await ImageCropPicker.openPicker({
                     width: 2048,
                     height: 2048,
+                    forceJpg: true,
                     cropping: true,
                   });
                   setProfileImageSelected(image);
@@ -204,7 +227,12 @@ export function RegisterScreen({
                 )}
               />
 
+              {registerError instanceof AppError && (
+                <Text color="RED_LIGHT">{registerError.message}</Text>
+              )}
+
               <Button
+                isLoading={isRegistering}
                 variant="secondary"
                 onPress={handleSubmit(onSubmit)}
                 fontWeight="BOLD">
