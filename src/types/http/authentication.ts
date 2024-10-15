@@ -9,7 +9,7 @@ export namespace LoginService {
   export type Result = {
     token: string;
     user: TUser;
-    refresh_token: string;
+    'refresh-token': string;
   };
 }
 

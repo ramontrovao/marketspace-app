@@ -44,6 +44,8 @@ export function AuthenticationContextProvider({
 }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
+  const token = storageService.getItem('token');
+
   const {
     register: registerMutation,
     isPending: isRegistering,
@@ -57,12 +59,12 @@ export function AuthenticationContextProvider({
   } = useLogin();
 
   async function login(params: LoginService.Params) {
-    // TODO: integrate JWT with MMKV
     const {
-      data: {token},
+      data: {token, ...rest},
     } = await loginMutation(params);
 
     storageService.setItem('token', token);
+    storageService.setItem('refresh_token', rest['refresh-token']);
 
     setIsAuthenticated(true);
   }
@@ -84,10 +86,10 @@ export function AuthenticationContextProvider({
   }
 
   useEffect(() => {
-    const token = storageService.getItem('token');
-
-    setIsAuthenticated(!!token);
-  }, []);
+    if (token) {
+      setIsAuthenticated(true);
+    }
+  }, [token]);
 
   return (
     <AuthenticationContext.Provider

@@ -171,6 +171,7 @@ export function RegisterScreen({
                     onBlur={onBlur}
                     value={value}
                     errorMessage={error?.message}
+                    autoCorrect={false}
                     placeholder="E-mail"
                   />
                 )}
