@@ -82,6 +82,9 @@ export function AuthenticationContextProvider({
   }
 
   function logout() {
+    storageService.deleteItem('token');
+    storageService.deleteItem('refresh_token');
+
     setIsAuthenticated(false);
   }
 
