@@ -48,7 +48,9 @@ export function LoginScreen({
       />
 
       <S.LoginContainer>
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView
+          contentContainerStyle={{flex: 1}}
+          showsVerticalScrollIndicator={false}>
           <S.TopWrapper>
             <S.LogoContainer>
               <Logo width={80} height={50} />

@@ -12,7 +12,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {TStackParamList} from '../../types/navigation';
 import {BackHeader} from '../../components/BackHeader';
 import {PencilSimpleLine, User} from 'phosphor-react-native';
-import ImageCropPicker, { ImageOrVideo } from 'react-native-image-crop-picker';
+import ImageCropPicker, {ImageOrVideo} from 'react-native-image-crop-picker';
 
 const registerFormSchema = z
   .object({
@@ -80,6 +80,7 @@ export function RegisterScreen({
 
       <S.RegisterContainer>
         <BackHeader />
+
         <ScrollView>
           <S.TopWrapper>
             <S.LogoContainer>
@@ -98,8 +99,8 @@ export function RegisterScreen({
                   const image = await ImageCropPicker.openPicker({
                     width: 300,
                     height: 400,
-                    cropping: true
-                  })
+                    cropping: true,
+                  });
                   setProfileImageSelected(image);
                 }}>
                 {profileImageSelected && profileImageSelected.path && (
@@ -107,8 +108,7 @@ export function RegisterScreen({
                     source={{uri: profileImageSelected.path}}
                   />
                 )}
-                {(!profileImageSelected ||
-                  !profileImageSelected.path) && (
+                {(!profileImageSelected || !profileImageSelected.path) && (
                   <S.SelectProfileImageContainer>
                     <User weight="bold" size={48} color={THEME.COLORS.GRAY_4} />
                   </S.SelectProfileImageContainer>
