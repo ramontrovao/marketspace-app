@@ -1,8 +1,8 @@
 import React from 'react';
 import * as S from './styles';
-import {StatusBar} from 'react-native';
+import {StatusBar, TouchableOpacity} from 'react-native';
 import {THEME} from '../../styles/theme';
-import {Text} from '../../components/Text';
+import {Plus} from 'phosphor-react-native';
 
 export function ProductListingScreen() {
   return (
@@ -14,7 +14,15 @@ export function ProductListingScreen() {
       />
 
       <S.ProductListingContainer>
-        <Text>ProductListing</Text>
+        <S.ProductListingHeader>
+          <S.ProductListingTitle fontWeight="BOLD">
+            Meus anúncios
+          </S.ProductListingTitle>
+
+          <TouchableOpacity>
+            <Plus size={24} />
+          </TouchableOpacity>
+        </S.ProductListingHeader>
       </S.ProductListingContainer>
     </>
   );
