@@ -97,8 +97,8 @@ export function RegisterScreen({
               <S.ProfileTouchable
                 onPress={async () => {
                   const image = await ImageCropPicker.openPicker({
-                    width: 300,
-                    height: 400,
+                    width: 2048,
+                    height: 2048,
                     cropping: true,
                   });
                   setProfileImageSelected(image);
@@ -108,6 +108,7 @@ export function RegisterScreen({
                     source={{uri: profileImageSelected.path}}
                   />
                 )}
+
                 {(!profileImageSelected || !profileImageSelected.path) && (
                   <S.SelectProfileImageContainer>
                     <User weight="bold" size={48} color={THEME.COLORS.GRAY_4} />

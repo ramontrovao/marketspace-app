@@ -11,6 +11,8 @@ export const TopWrapper = styled.View`
   flex: 1;
 
   background-color: ${({theme}) => theme.COLORS.GRAY_6};
+  border-bottom-left-radius: 24px;
+  border-bottom-right-radius: 24px;
 `;
 
 export const LogoContainer = styled.View`
@@ -22,7 +24,7 @@ export const LogoContainer = styled.View`
 
 export const ProfileTouchable = styled.TouchableOpacity`
   position: relative;
-  max-width: 100;
+  max-width: 100px;
 
   align-self: center;
 `;
@@ -93,7 +95,7 @@ export const RegisterTitle = styled(Text)`
 
 export const FormContainer = styled.View`
   width: 100%;
-  padding: 48px;
+  padding: 24px 48px 48px 48px;
   gap: 18px;
 `;
 
@@ -106,8 +108,6 @@ export const BottomWrapper = styled.View`
   flex: 0.2;
 
   background-color: ${({theme}) => theme.COLORS.GRAY_7};
-  border-top-left-radius: 24px;
-  border-top-right-radius: 24px;
 `;
 
 export const SignUpTitle = styled(Text)`
