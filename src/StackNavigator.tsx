@@ -5,6 +5,7 @@ import {LoginScreen} from './screens/LoginScreen';
 import {RegisterScreen} from './screens/RegisterScreen';
 import {TabNavigator} from './TabNavigator';
 import {useAuthentication} from './contexts/AuthenticationContext';
+import {CreateProductScreen} from './screens/CreateProductScreen';
 
 const Stack = createNativeStackNavigator<TStackParamList>();
 
@@ -23,7 +24,13 @@ export function StackNavigator() {
       )}
 
       {isAuthenticated && (
-        <Stack.Screen name="TabNavigator" component={TabNavigator} />
+        <>
+          <Stack.Screen name="TabNavigator" component={TabNavigator} />
+          <Stack.Screen
+            name="CreateProductScreen"
+            component={CreateProductScreen}
+          />
+        </>
       )}
     </Stack.Navigator>
   );

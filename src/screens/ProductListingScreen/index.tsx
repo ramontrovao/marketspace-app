@@ -4,7 +4,11 @@ import {StatusBar, TouchableOpacity} from 'react-native';
 import {THEME} from '../../styles/theme';
 import {Plus} from 'phosphor-react-native';
 
-export function ProductListingScreen() {
+export function ProductListingScreen({navigation}) {
+  function onPressCreateProductButton() {
+    navigation.navigate('CreateProductScreen');
+  }
+
   return (
     <>
       <StatusBar
@@ -19,7 +23,7 @@ export function ProductListingScreen() {
             Meus anúncios
           </S.ProductListingTitle>
 
-          <TouchableOpacity>
+          <TouchableOpacity onPress={onPressCreateProductButton}>
             <Plus size={24} />
           </TouchableOpacity>
         </S.ProductListingHeader>
