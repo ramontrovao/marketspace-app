@@ -11,6 +11,8 @@ import {THEME} from '../../styles/theme';
 import {NativeStackScreenProps} from 'react-native-screens/lib/typescript/native-stack/types';
 import {TStackParamList} from '../../types/navigation';
 import {useAuthentication} from '../../contexts/AuthenticationContext';
+import {Text} from '../../components/Text';
+import {AppError} from '../../services/http/appError';
 
 const loginFormSchema = z.object({
   email: z
@@ -27,15 +29,14 @@ type TLoginFormSchema = z.infer<typeof loginFormSchema>;
 export function LoginScreen({
   navigation,
 }: NativeStackScreenProps<TStackParamList>) {
-  const {login} = useAuthentication();
+  const {login, isLogging, loginError} = useAuthentication();
   const {control, handleSubmit} = useForm<TLoginFormSchema>({
     resolver: zodResolver(loginFormSchema),
     reValidateMode: 'onChange',
   });
 
-  function onSubmit(data: TLoginFormSchema) {
-    console.log(data);
-    login();
+  async function onSubmit(data: TLoginFormSchema) {
+    await login(data);
   }
 
   return (
@@ -47,7 +48,9 @@ export function LoginScreen({
       />
 
       <S.LoginContainer>
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView
+          contentContainerStyle={{flex: 1}}
+          showsVerticalScrollIndicator={false}>
           <S.TopWrapper>
             <S.LogoContainer>
               <Logo width={80} height={50} />
@@ -93,7 +96,14 @@ export function LoginScreen({
                 )}
               />
 
-              <Button onPress={handleSubmit(onSubmit)} fontWeight="BOLD">
+              {loginError instanceof AppError && (
+                <Text color="RED_LIGHT">{loginError.message}</Text>
+              )}
+
+              <Button
+                isLoading={isLogging}
+                onPress={handleSubmit(onSubmit)}
+                fontWeight="BOLD">
                 Entrar
               </Button>
             </S.FormContainer>

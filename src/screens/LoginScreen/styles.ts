@@ -1,9 +1,10 @@
 import styled from 'styled-components/native';
 import {Text} from '../../components/Text';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
-export const LoginContainer = styled.SafeAreaView`
-  background-color: ${({theme}) => theme.COLORS.GRAY_7};
+export const LoginContainer = styled(SafeAreaView)`
   flex: 1;
+  background-color: ${({theme}) => theme.COLORS.GRAY_7};
 `;
 
 export const TopWrapper = styled.View`
@@ -53,17 +54,16 @@ export const FormContainer = styled.View`
 `;
 
 export const BottomWrapper = styled.View`
-  padding: 48px;
+  padding: 32px 48px;
 
+  flex: 0.25;
   justify-content: center;
   align-items: center;
-  gap: 8px;
-  flex: 0.2;
+  gap: 16px;
 
   background-color: ${({theme}) => theme.COLORS.GRAY_7};
 `;
 
 export const SignUpTitle = styled(Text)`
   font-size: 14px;
-  margin-bottom: 16px;
 `;

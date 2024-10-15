@@ -1,7 +1,8 @@
 import styled from 'styled-components/native';
 import {Text} from '../../components/Text';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
-export const RegisterContainer = styled.SafeAreaView`
+export const RegisterContainer = styled(SafeAreaView)`
   background-color: ${({theme}) => theme.COLORS.GRAY_7};
   flex: 1;
 `;
@@ -10,28 +11,78 @@ export const TopWrapper = styled.View`
   flex: 1;
 
   background-color: ${({theme}) => theme.COLORS.GRAY_6};
+  border-bottom-left-radius: 24px;
+  border-bottom-right-radius: 24px;
 `;
 
-export const LogoContainer = styled.View`
+export const TitleContainer = styled.View`
   padding: 0 48px;
   margin-top: 24px;
 
   gap: 8px;
 `;
 
-export const LogoTitleContainer = styled.View`
+export const ProfileTouchable = styled.TouchableOpacity`
+  position: relative;
+  max-width: 100px;
+
+  align-self: center;
+`;
+
+export const SelectProfileImageContainer = styled.View`
+  width: 88px;
+  height: 88px;
+
+  align-self: center;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 999px;
+  border-width: 3px;
+  border-style: solid;
+  border-color: ${props => props.theme.COLORS.BLUE_LIGHT};
+  background-color: ${props => props.theme.COLORS.GRAY_5};
+`;
+
+export const ProfileImageContainer = styled.Image`
+  width: 88px;
+  height: 88px;
+
+  align-self: center;
+
+  border-radius: 999px;
+  border-width: 3px;
+  border-style: solid;
+  border-color: ${props => props.theme.COLORS.BLUE_LIGHT};
+`;
+
+export const ProfileImagePencilContainer = styled.View`
+  position: absolute;
+  right: -10px;
+  bottom: 0;
+  justify-content: center;
+  align-items: center;
+
+  width: 40px;
+  height: 40px;
+
+  background-color: ${props => props.theme.COLORS.BLUE_LIGHT};
+  border-radius: 999px;
+`;
+
+export const TitleWrapper = styled.View`
   justify-content: center;
   align-items: center;
   gap: 4px;
 `;
 
-export const LogoTitle = styled(Text)`
+export const Title = styled(Text)`
   font-size: ${({theme}) => theme.FONT_SIZES.XL};
   font-weight: 700;
   color: ${props => props.theme.COLORS.BLACK};
 `;
 
-export const LogoSubtitle = styled(Text)`
+export const Subtitle = styled(Text)`
   font-weight: ${({theme}) => theme.FONT_WEIGHTS.LIGHT};
   font-size: ${({theme}) => theme.FONT_SIZES.SM};
   color: ${props => props.theme.COLORS.GRAY_3};
@@ -44,7 +95,7 @@ export const RegisterTitle = styled(Text)`
 
 export const FormContainer = styled.View`
   width: 100%;
-  padding: 48px;
+  padding: 24px 48px 48px 48px;
   gap: 18px;
 `;
 
@@ -57,11 +108,9 @@ export const BottomWrapper = styled.View`
   flex: 0.2;
 
   background-color: ${({theme}) => theme.COLORS.GRAY_7};
-  border-top-left-radius: 24px;
-  border-top-right-radius: 24px;
 `;
 
-export const SignUpTitle = styled(Text)`
+export const LoginTitle = styled(Text)`
   font-size: 14px;
   margin-bottom: 16px;
 `;
