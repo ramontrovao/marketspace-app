@@ -11,5 +11,8 @@ api.interceptors.response.use(undefined, error => {
     throw new AppError(error);
   }
 
-  throw error;
+  throw new AppError({
+    status: error.status,
+    message: 'Ocorreu um erro inesperado! Tente novamente mais tarde.',
+  });
 });

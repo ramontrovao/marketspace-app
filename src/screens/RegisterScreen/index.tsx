@@ -60,14 +60,15 @@ export function RegisterScreen({
     ImageOrVideo | undefined
   >();
 
-  const {register, registerError, isRegistering} = useAuthentication();
+  const {register, registerError, isRegistering, isLogging} =
+    useAuthentication();
 
   async function onSubmit({phone, ...rest}: TRegisterFormSchema) {
     const {unmasked: unmaskedPhone} = formatWithMask({
       text: phone,
       mask: Masks.BRL_PHONE,
     });
-    const {avatar, email, name, password, tel} = {
+    const payload = {
       ...rest,
       avatar: {
         type: profileImageSelected?.mime,
@@ -77,14 +78,22 @@ export function RegisterScreen({
       tel: unmaskedPhone,
     };
 
-    const formData = new FormData();
-    formData.append('avatar', avatar);
-    formData.append('name', name);
-    formData.append('email', email);
-    formData.append('tel', tel);
-    formData.append('password', password);
+    await register(payload);
+  }
 
-    await register(formData);
+  async function pickImage() {
+    const image = await ImageCropPicker.openPicker({
+      width: 2048,
+      height: 2048,
+      forceJpg: true,
+      cropping: true,
+    });
+
+    setProfileImageSelected(image);
+  }
+
+  function navigateToLogin() {
+    navigation.navigate('Login');
   }
 
   const {control, handleSubmit} = useForm<TRegisterFormSchema>({
@@ -105,27 +114,18 @@ export function RegisterScreen({
 
         <ScrollView>
           <S.TopWrapper>
-            <S.LogoContainer>
-              <S.LogoTitleContainer>
-                <S.LogoTitle>Boas vindas!</S.LogoTitle>
-                <S.LogoSubtitle>
+            <S.TitleContainer>
+              <S.TitleWrapper>
+                <S.Title>Boas vindas!</S.Title>
+                <S.Subtitle>
                   Crie sua conta e use o espaço para comprar itens variados e
                   vender seus produtos
-                </S.LogoSubtitle>
-              </S.LogoTitleContainer>
-            </S.LogoContainer>
+                </S.Subtitle>
+              </S.TitleWrapper>
+            </S.TitleContainer>
 
             <S.FormContainer>
-              <S.ProfileTouchable
-                onPress={async () => {
-                  const image = await ImageCropPicker.openPicker({
-                    width: 2048,
-                    height: 2048,
-                    forceJpg: true,
-                    cropping: true,
-                  });
-                  setProfileImageSelected(image);
-                }}>
+              <S.ProfileTouchable onPress={pickImage}>
                 {profileImageSelected && profileImageSelected.path && (
                   <S.ProfileImageContainer
                     source={{uri: profileImageSelected.path}}
@@ -232,7 +232,7 @@ export function RegisterScreen({
               )}
 
               <Button
-                isLoading={isRegistering}
+                isLoading={isRegistering || isLogging}
                 variant="secondary"
                 onPress={handleSubmit(onSubmit)}
                 fontWeight="BOLD">
@@ -242,10 +242,10 @@ export function RegisterScreen({
           </S.TopWrapper>
 
           <S.BottomWrapper>
-            <S.SignUpTitle>Já tem uma conta?</S.SignUpTitle>
+            <S.LoginTitle>Já tem uma conta?</S.LoginTitle>
 
             <Button
-              onPress={() => navigation.navigate('Login')}
+              onPress={navigateToLogin}
               fontWeight="BOLD"
               variant="tertiary">
               Ir para o login

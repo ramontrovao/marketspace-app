@@ -1,16 +1,35 @@
-import React, {createContext, ReactNode, useContext, useState} from 'react';
+import React, {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import {useLogin} from '../hooks/http/useLogin';
-import {LoginService, RegisterService} from '../types/http/authentication';
+import {LoginService} from '../types/http/authentication';
 import {AxiosError} from 'axios';
 import {AppError} from '../services/http/appError';
 import {useRegister} from '../hooks/http/useRegister';
+import {storageService} from '../services/storage/storageService';
+
+interface RegisterProps {
+  avatar: {
+    uri?: string;
+    type?: string;
+    name?: string;
+  };
+  name: string;
+  email: string;
+  tel: string;
+  password: string;
+}
 
 type TAuthenticationContextValues = {
   isAuthenticated: boolean;
   isLogging: boolean;
   loginError?: AxiosError | AppError | null;
   login: (params: LoginService.Params) => Promise<void>;
-  register: (params: RegisterService.Params) => Promise<void>;
+  register: (params: RegisterProps) => Promise<void>;
   registerError?: AxiosError | AppError | null;
   isRegistering: boolean;
   logout: () => void;
@@ -39,21 +58,36 @@ export function AuthenticationContextProvider({
 
   async function login(params: LoginService.Params) {
     // TODO: integrate JWT with MMKV
-    const result = await loginMutation(params);
+    const {
+      data: {token},
+    } = await loginMutation(params);
+
+    storageService.setItem('token', token);
 
     setIsAuthenticated(true);
   }
 
-  async function register(params: RegisterService.Params) {
-    // TODO: integrate JWT with MMKV
-    const result = await registerMutation(params);
+  async function register({avatar, name, email, tel, password}: RegisterProps) {
+    const formData = new FormData();
+    formData.append('avatar', avatar);
+    formData.append('name', name);
+    formData.append('email', email);
+    formData.append('tel', tel);
+    formData.append('password', password);
 
-    setIsAuthenticated(true);
+    await registerMutation(formData);
+    await login({email, password});
   }
 
   function logout() {
     setIsAuthenticated(false);
   }
+
+  useEffect(() => {
+    const token = storageService.getItem('token');
+
+    setIsAuthenticated(!!token);
+  }, []);
 
   return (
     <AuthenticationContext.Provider

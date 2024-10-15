@@ -15,7 +15,7 @@ export const TopWrapper = styled.View`
   border-bottom-right-radius: 24px;
 `;
 
-export const LogoContainer = styled.View`
+export const TitleContainer = styled.View`
   padding: 0 48px;
   margin-top: 24px;
 
@@ -70,19 +70,19 @@ export const ProfileImagePencilContainer = styled.View`
   border-radius: 999px;
 `;
 
-export const LogoTitleContainer = styled.View`
+export const TitleWrapper = styled.View`
   justify-content: center;
   align-items: center;
   gap: 4px;
 `;
 
-export const LogoTitle = styled(Text)`
+export const Title = styled(Text)`
   font-size: ${({theme}) => theme.FONT_SIZES.XL};
   font-weight: 700;
   color: ${props => props.theme.COLORS.BLACK};
 `;
 
-export const LogoSubtitle = styled(Text)`
+export const Subtitle = styled(Text)`
   font-weight: ${({theme}) => theme.FONT_WEIGHTS.LIGHT};
   font-size: ${({theme}) => theme.FONT_SIZES.SM};
   color: ${props => props.theme.COLORS.GRAY_3};
@@ -110,7 +110,7 @@ export const BottomWrapper = styled.View`
   background-color: ${({theme}) => theme.COLORS.GRAY_7};
 `;
 
-export const SignUpTitle = styled(Text)`
+export const LoginTitle = styled(Text)`
   font-size: 14px;
   margin-bottom: 16px;
 `;

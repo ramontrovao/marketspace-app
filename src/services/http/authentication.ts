@@ -1,6 +1,14 @@
-import {LOGIN_ROUTE, REGISTER_ROUTE} from '../../constants/http/paths';
+import {
+  LOGIN_ROUTE,
+  REFRESH_TOKEN_ROUTE,
+  REGISTER_ROUTE,
+} from '../../constants/http/paths';
 import {api} from '../../lib/axios';
-import {LoginService, RegisterService} from '../../types/http/authentication';
+import {
+  LoginService,
+  RefreshTokenService,
+  RegisterService,
+} from '../../types/http/authentication';
 
 export async function login(params: LoginService.Params) {
   try {
@@ -18,6 +26,18 @@ export async function register(params: RegisterService.Params) {
       REGISTER_ROUTE,
       params,
       {headers: {'Content-Type': 'multipart/form-data'}},
+    );
+
+    return result;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function refreshToken() {
+  try {
+    const result = await api.post<RefreshTokenService.Result>(
+      REFRESH_TOKEN_ROUTE,
     );
 
     return result;

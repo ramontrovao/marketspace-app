@@ -18,3 +18,11 @@ export namespace RegisterService {
 
   export type Result = undefined;
 }
+
+export namespace RefreshTokenService {
+  export type Params = undefined;
+
+  export type Result = {
+    token: string;
+  };
+}
