@@ -1,8 +1,10 @@
 import MaskInput from 'react-native-mask-input';
 import styled from 'styled-components/native';
+import {THEME} from '../../styles/theme';
 
 interface TextInputStyledProps {
   isFocused: boolean;
+  backgroundColor: keyof typeof THEME.COLORS;
 }
 
 export const TextInputContainer = styled.View`
@@ -15,12 +17,12 @@ export const TextInputWrapper = styled.View`
 
 export const TextInput = styled(MaskInput)<TextInputStyledProps>`
   width: 100%;
-  min-height: 45px;
+  min-height: ${({multiline}) => (multiline ? 160 : 45)}px;
   padding: 12px 16px;
   transition: 1s;
 
-  background-color: ${({theme, isFocused}) =>
-    isFocused ? theme.COLORS.WHITE : theme.COLORS.GRAY_7};
+  background-color: ${({theme, backgroundColor, isFocused}) =>
+    isFocused ? theme.COLORS.WHITE : theme.COLORS[backgroundColor]};
   border-width: ${({isFocused}) => (isFocused ? 1 : 0)}px;
   border-color: ${({theme}) => theme.COLORS.GRAY_3};
   color: ${({theme}) => theme.COLORS.GRAY_4};

@@ -7,12 +7,14 @@ import {THEME} from '../../styles/theme';
 
 interface TextInputProps extends MaskInputProps {
   errorMessage?: string;
+  backgroundColor?: keyof typeof THEME.COLORS;
   variant?: 'normal' | 'secure';
 }
 
 export function TextInput({
   errorMessage,
   variant = 'normal',
+  backgroundColor = 'GRAY_7',
   onBlur,
   ...rest
 }: TextInputProps) {
@@ -26,6 +28,7 @@ export function TextInput({
           isFocused={isFocused}
           secureTextEntry={!showContent}
           onFocus={() => setIsFocused(true)}
+          backgroundColor={backgroundColor}
           onBlur={e => {
             setIsFocused(false);
 

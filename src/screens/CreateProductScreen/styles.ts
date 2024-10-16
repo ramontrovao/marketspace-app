@@ -32,6 +32,12 @@ export const FormField = styled.View`
   gap: 16px;
 `;
 
+export const RadioContainer = styled.TouchableOpacity`
+  gap: 8px;
+  flex-direction: row;
+  align-items: center;
+`;
+
 export const FooterContainer = styled.View`
   width: 100%;
   padding: 24px;
