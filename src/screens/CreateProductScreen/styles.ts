@@ -29,6 +29,7 @@ export const FormContainer = styled.View`
 `;
 
 export const FormField = styled.View`
+  flex: 1;
   gap: 16px;
 `;
 

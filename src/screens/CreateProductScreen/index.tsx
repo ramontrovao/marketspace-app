@@ -35,7 +35,7 @@ export function CreateProductScreen({
       <S.CreateProductContainer>
         <ScrollView
           contentContainerStyle={{
-            flex: 1,
+            flexGrow: 1,
             padding: 24,
             backgroundColor: THEME.COLORS.GRAY_7,
           }}>
@@ -73,6 +73,7 @@ export function CreateProductScreen({
               <TextInput
                 backgroundColor="WHITE"
                 multiline
+                textAlignVertical="top"
                 placeholder="Descrição do produto"
               />
 

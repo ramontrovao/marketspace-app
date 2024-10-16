@@ -18,6 +18,7 @@ export function TextInput({
   onBlur,
   ...rest
 }: TextInputProps) {
+  const [value, setValue] = useState('');
   const [showContent, setShowContent] = useState(!(variant === 'secure'));
   const [isFocused, setIsFocused] = useState(false);
 
@@ -29,6 +30,8 @@ export function TextInput({
           secureTextEntry={!showContent}
           onFocus={() => setIsFocused(true)}
           backgroundColor={backgroundColor}
+          value={value}
+          onChangeText={setValue}
           onBlur={e => {
             setIsFocused(false);
 

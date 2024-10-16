@@ -15,7 +15,9 @@ export const TextInputWrapper = styled.View`
   position: relative;
 `;
 
-export const TextInput = styled(MaskInput)<TextInputStyledProps>`
+export const TextInput = styled(MaskInput).attrs(({theme}) => ({
+  placeholderTextColor: theme.COLORS.GRAY_4,
+}))<TextInputStyledProps>`
   width: 100%;
   min-height: ${({multiline}) => (multiline ? 160 : 45)}px;
   padding: 12px 16px;
@@ -25,7 +27,7 @@ export const TextInput = styled(MaskInput)<TextInputStyledProps>`
     isFocused ? theme.COLORS.WHITE : theme.COLORS[backgroundColor]};
   border-width: ${({isFocused}) => (isFocused ? 1 : 0)}px;
   border-color: ${({theme}) => theme.COLORS.GRAY_3};
-  color: ${({theme}) => theme.COLORS.GRAY_4};
+  color: ${({theme}) => theme.COLORS.GRAY_3};
   font-family: 'Karla';
   border-radius: 6px;
 `;
