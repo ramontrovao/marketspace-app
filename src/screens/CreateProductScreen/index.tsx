@@ -10,9 +10,20 @@ import {TextInput} from '../../components/TextInput';
 import {Button} from '../../components/Button';
 import {Checkbox, RadioButton} from 'react-native-paper';
 
+const PAYMENT_METHODS = [
+  'Boleto',
+  'Pix',
+  'Dinheiro',
+  'Cartão de Crédito',
+  'Depósito Bancário',
+];
+
 export function CreateProductScreen({
   navigation,
 }: NativeStackScreenProps<TStackParamList>) {
+  const [paymentMethodsAccepted, setPaymentMethodsAccepted] = useState<
+    string[]
+  >([]);
   const [productType, setProductType] = useState('used');
   const [acceptTrade, setAcceptTrade] = useState(false);
 
@@ -22,6 +33,19 @@ export function CreateProductScreen({
 
   function toggleTradeSwitch() {
     setAcceptTrade(!acceptTrade);
+  }
+
+  function changeCheckboxesValue(value: string) {
+    if (paymentMethodsAccepted.includes(value)) {
+      const paymentMethodsUpdated = paymentMethodsAccepted.filter(
+        p => p !== value,
+      );
+
+      setPaymentMethodsAccepted(paymentMethodsUpdated);
+      return;
+    }
+
+    setPaymentMethodsAccepted(arr => [...arr, value]);
   }
 
   return (
@@ -129,13 +153,23 @@ export function CreateProductScreen({
                 Meios de pagamento aceitos
               </Text>
 
-              <S.RadioContainer>
-                <Checkbox.Android
-                  status="unchecked"
-                  color={THEME.COLORS.BLUE_LIGHT}
-                />
-                <Text>Produto novo</Text>
-              </S.RadioContainer>
+              <S.CheckboxesContainer>
+                {PAYMENT_METHODS.map(paymentMethod => (
+                  <S.RadioContainer
+                    onPress={() => changeCheckboxesValue(paymentMethod)}>
+                    <Checkbox.Android
+                      onPress={() => changeCheckboxesValue(paymentMethod)}
+                      status={
+                        paymentMethodsAccepted.includes(paymentMethod)
+                          ? 'checked'
+                          : 'unchecked'
+                      }
+                      color={THEME.COLORS.BLUE_LIGHT}
+                    />
+                    <Text>{paymentMethod}</Text>
+                  </S.RadioContainer>
+                ))}
+              </S.CheckboxesContainer>
             </S.FormField>
           </S.FormContainer>
         </ScrollView>

@@ -39,6 +39,10 @@ export const RadioContainer = styled.TouchableOpacity`
   align-items: center;
 `;
 
+export const CheckboxesContainer = styled.View`
+  gap: 2px;
+`;
+
 export const FooterContainer = styled.View`
   width: 100%;
   padding: 24px;
