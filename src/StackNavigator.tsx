@@ -26,10 +26,7 @@ export function StackNavigator() {
       {isAuthenticated && (
         <>
           <Stack.Screen name="TabNavigator" component={TabNavigator} />
-          <Stack.Screen
-            name="CreateProductScreen"
-            component={CreateProductScreen}
-          />
+          <Stack.Screen name="CreateProduct" component={CreateProductScreen} />
         </>
       )}
     </Stack.Navigator>

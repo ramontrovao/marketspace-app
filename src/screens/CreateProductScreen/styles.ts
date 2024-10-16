@@ -3,9 +3,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {Text} from '../../components/Text';
 
 export const CreateProductContainer = styled(SafeAreaView)`
-  padding: 24px;
-
-  background-color: ${({theme}) => theme.COLORS.GRAY_7};
+  background-color: ${({theme}) => theme.COLORS.WHITE};
   flex: 1;
 `;
 
@@ -21,4 +19,25 @@ export const CreateProductTitle = styled(Text)`
 
   font-size: 20px;
   text-align: center;
+`;
+
+export const FormContainer = styled.View`
+  margin-top: 32px;
+
+  flex: 1;
+  gap: 32px;
+`;
+
+export const FormField = styled.View`
+  gap: 16px;
+`;
+
+export const FooterContainer = styled.View`
+  width: 100%;
+  padding: 24px;
+  height: 90px;
+
+  flex-direction: row;
+  gap: 12px;
+  background-color: ${({theme}) => theme.COLORS.WHITE};
 `;

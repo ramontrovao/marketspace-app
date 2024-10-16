@@ -1,12 +1,16 @@
 import React from 'react';
 import * as S from './styles';
-import {StatusBar, TouchableOpacity} from 'react-native';
+import {ScrollView, StatusBar, TouchableOpacity} from 'react-native';
 import {THEME} from '../../styles/theme';
 import {Plus} from 'phosphor-react-native';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {TStackParamList} from '../../types/navigation';
 
-export function ProductListingScreen({navigation}) {
+export function ProductListingScreen({
+  navigation,
+}: NativeStackScreenProps<TStackParamList>) {
   function onPressCreateProductButton() {
-    navigation.navigate('CreateProductScreen');
+    navigation.navigate('CreateProduct');
   }
 
   return (
@@ -18,15 +22,17 @@ export function ProductListingScreen({navigation}) {
       />
 
       <S.ProductListingContainer>
-        <S.ProductListingHeader>
-          <S.ProductListingTitle fontWeight="BOLD">
-            Meus anúncios
-          </S.ProductListingTitle>
+        <ScrollView>
+          <S.ProductListingHeader>
+            <S.ProductListingTitle fontWeight="BOLD">
+              Meus anúncios
+            </S.ProductListingTitle>
 
-          <TouchableOpacity onPress={onPressCreateProductButton}>
-            <Plus size={24} />
-          </TouchableOpacity>
-        </S.ProductListingHeader>
+            <TouchableOpacity onPress={onPressCreateProductButton}>
+              <Plus size={24} />
+            </TouchableOpacity>
+          </S.ProductListingHeader>
+        </ScrollView>
       </S.ProductListingContainer>
     </>
   );

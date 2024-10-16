@@ -6,12 +6,17 @@ interface TouchableOpacityStyledProps {
 }
 
 export const TouchableOpacity = styled.TouchableOpacity<TouchableOpacityStyledProps>`
-  background-color: ${({theme, variant}) =>
-    theme.COLORS[BUTTON_VARIANTS[variant].backgroundColor]};
-  padding: 16px;
-  min-height: 52px;
   width: 100%;
-  border-radius: 8px;
+  height: 100%;
+  min-height: 52px;
+  max-height: 52px;
+  padding: 16px;
+
+  flex: 1;
   justify-content: center;
   align-items: center;
+
+  background-color: ${({theme, variant}) =>
+    theme.COLORS[BUTTON_VARIANTS[variant].backgroundColor]};
+  border-radius: 8px;
 `;
