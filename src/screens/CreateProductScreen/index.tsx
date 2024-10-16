@@ -10,6 +10,7 @@ import {TextInput} from '../../components/TextInput';
 import {Button} from '../../components/Button';
 import {Checkbox, RadioButton} from 'react-native-paper';
 import ImageCropPicker, {ImageOrVideo} from 'react-native-image-crop-picker';
+import {z} from 'zod';
 
 const PAYMENT_METHODS = [
   'Boleto',
@@ -18,6 +19,23 @@ const PAYMENT_METHODS = [
   'Cartão de Crédito',
   'Depósito Bancário',
 ];
+
+const createProductSchema = z.object({
+  name: z
+    .string({message: 'Este campo é obrigatório.'})
+    .min(5, 'Seu título deve conter ao menos 5 caracteres.'),
+  description: z
+    .string({message: 'Este campo é obrigatório.'})
+    .min(5, 'Digite um título válido.'),
+  is_new: z.boolean({message: 'Este campo é obrigatório.'}).default(false),
+  price: z
+    .number({message: 'Este campo é obrigatório.'})
+    .min(1, 'Digite um valor válido.'),
+  accept_trade: z
+    .boolean({message: 'Este campo é obrigatório.'})
+    .default(false),
+  payment_methods: z.array(z.string()),
+});
 
 export function CreateProductScreen({
   navigation,
