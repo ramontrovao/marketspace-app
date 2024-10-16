@@ -21,6 +21,45 @@ export const CreateProductTitle = styled(Text)`
   text-align: center;
 `;
 
+export const ImagesContainer = styled.View`
+  flex-direction: row;
+  gap: 8px;
+`;
+
+export const ImageContainer = styled.Image`
+  width: 100px;
+  height: 100px;
+
+  border-radius: 6px;
+`;
+
+export const RemoveImageContainer = styled.View`
+  position: absolute;
+  z-index: 1;
+  right: 5px;
+  top: 5px;
+
+  width: 16px;
+  height: 16px;
+
+  justify-content: center;
+  align-items: center;
+
+  background-color: ${({theme}) => theme.COLORS.GRAY_2};
+  border-radius: 999px;
+`;
+
+export const AddImageButton = styled.TouchableOpacity`
+  width: 100px;
+  height: 100px;
+
+  justify-content: center;
+  align-items: center;
+
+  background-color: ${({theme}) => theme.COLORS.GRAY_5};
+  border-radius: 6px;
+`;
+
 export const FormContainer = styled.View`
   margin-top: 32px;
 

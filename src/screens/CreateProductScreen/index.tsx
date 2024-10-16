@@ -2,13 +2,14 @@ import React, {useState} from 'react';
 import * as S from './styles';
 import {ScrollView, StatusBar, Switch, TouchableOpacity} from 'react-native';
 import {THEME} from '../../styles/theme';
-import {ArrowLeft} from 'phosphor-react-native';
+import {ArrowLeft, Plus, X} from 'phosphor-react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {TStackParamList} from '../../types/navigation';
 import {Text} from '../../components/Text';
 import {TextInput} from '../../components/TextInput';
 import {Button} from '../../components/Button';
 import {Checkbox, RadioButton} from 'react-native-paper';
+import ImageCropPicker, {ImageOrVideo} from 'react-native-image-crop-picker';
 
 const PAYMENT_METHODS = [
   'Boleto',
@@ -21,6 +22,7 @@ const PAYMENT_METHODS = [
 export function CreateProductScreen({
   navigation,
 }: NativeStackScreenProps<TStackParamList>) {
+  const [productImages, setProductImages] = useState<ImageOrVideo[]>([]);
   const [paymentMethodsAccepted, setPaymentMethodsAccepted] = useState<
     string[]
   >([]);
@@ -38,7 +40,7 @@ export function CreateProductScreen({
   function changeCheckboxesValue(value: string) {
     if (paymentMethodsAccepted.includes(value)) {
       const paymentMethodsUpdated = paymentMethodsAccepted.filter(
-        p => p !== value,
+        paymentMethod => paymentMethod !== value,
       );
 
       setPaymentMethodsAccepted(paymentMethodsUpdated);
@@ -46,6 +48,25 @@ export function CreateProductScreen({
     }
 
     setPaymentMethodsAccepted(arr => [...arr, value]);
+  }
+
+  async function onAddImage() {
+    const image = await ImageCropPicker.openPicker({
+      width: 2048,
+      height: 2048,
+      forceJpg: true,
+      cropping: true,
+    });
+
+    setProductImages(images => [...images, image]);
+  }
+
+  async function onRemoveImage(imagePath: string) {
+    const productImagesUpdated = productImages.filter(
+      image => image.path !== imagePath,
+    );
+
+    setProductImages(productImagesUpdated);
   }
 
   return (
@@ -83,6 +104,24 @@ export function CreateProductScreen({
                 Escolha até 3 imagens para mostrar o quando o seu produto é
                 incrível!
               </Text>
+
+              <S.ImagesContainer>
+                {productImages.map(image => (
+                  <TouchableOpacity onPress={() => onRemoveImage(image.path)}>
+                    <S.RemoveImageContainer>
+                      <X color={THEME.COLORS.WHITE} size={12} />
+                    </S.RemoveImageContainer>
+
+                    <S.ImageContainer source={{uri: image.path}} />
+                  </TouchableOpacity>
+                ))}
+
+                {productImages.length < 3 && (
+                  <S.AddImageButton onPress={onAddImage}>
+                    <Plus color={THEME.COLORS.GRAY_4} size={24} />
+                  </S.AddImageButton>
+                )}
+              </S.ImagesContainer>
             </S.FormField>
 
             <S.FormField>
