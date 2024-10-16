@@ -8,9 +8,14 @@ export const api = axios.create({
   baseURL: API_URL,
 });
 
+async function removeTokens() {
+  await storageService.deleteItem('token');
+  await storageService.deleteItem('refresh_token');
+}
+
 api.interceptors.request.use(
-  request => {
-    const token = storageService.getItem('token');
+  async request => {
+    const token = await storageService.getItem('token');
     if (token) {
       request.headers.Authorization = `Bearer ${token}`;
     }
@@ -26,6 +31,7 @@ api.interceptors.response.use(
   response => response,
   async error => {
     const originalRequest = error.config;
+    console.log(originalRequest);
     const isPublicUrl = PUBLIC_PATHS.includes(originalRequest.url);
 
     if (isPublicUrl) {
@@ -45,8 +51,7 @@ api.interceptors.response.use(
         return api(originalRequest);
       } catch (refreshError) {
         console.error('Token refresh failed:', refreshError);
-        localStorage.removeItem('token');
-        localStorage.removeItem('refresh_token');
+        await removeTokens();
 
         return Promise.reject(refreshError);
       }

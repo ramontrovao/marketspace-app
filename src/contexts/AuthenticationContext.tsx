@@ -44,8 +44,6 @@ export function AuthenticationContextProvider({
 }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const token = storageService.getItem('token');
-
   const {
     register: registerMutation,
     isPending: isRegistering,
@@ -81,18 +79,24 @@ export function AuthenticationContextProvider({
     await login({email, password});
   }
 
-  function logout() {
-    storageService.deleteItem('token');
-    storageService.deleteItem('refresh_token');
+  async function logout() {
+    await storageService.deleteItem('token');
+    await storageService.deleteItem('refresh_token');
 
     setIsAuthenticated(false);
   }
 
-  useEffect(() => {
+  async function validateToken() {
+    const token = await storageService.getItem('token');
+
     if (token) {
       setIsAuthenticated(true);
     }
-  }, [token]);
+  }
+
+  useEffect(() => {
+    validateToken();
+  }, []);
 
   return (
     <AuthenticationContext.Provider

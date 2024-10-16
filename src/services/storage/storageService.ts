@@ -1,9 +1,9 @@
-import {mmkvStorage} from './mmkvStorage';
+import {asyncStorage} from './asyncStorage';
 
 export interface IStorageService {
-  getItem: <T>(key: string) => T;
-  setItem: (key: string, value: unknown) => void;
-  deleteItem: (key: string) => void;
+  getItem: <T>(key: string) => Promise<T>;
+  setItem: (key: string, value: unknown) => Promise<void>;
+  deleteItem: (key: string) => Promise<void>;
 }
 
-export const storageService: IStorageService = mmkvStorage;
+export const storageService: IStorageService = asyncStorage;
