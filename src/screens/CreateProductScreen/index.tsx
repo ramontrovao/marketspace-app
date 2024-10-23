@@ -1,6 +1,12 @@
 import React, {useState} from 'react';
 import * as S from './styles';
-import {ScrollView, StatusBar, Switch, TouchableOpacity} from 'react-native';
+import {
+  ScrollView,
+  StatusBar,
+  Switch,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {THEME} from '../../styles/theme';
 import {ArrowLeft, Plus, X} from 'phosphor-react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
@@ -36,7 +42,9 @@ const createProductSchema = z.object({
   accept_trade: z
     .boolean({message: 'Este campo é obrigatório.'})
     .default(false),
-  payment_methods: z.array(z.string()),
+  payment_methods: z
+    .array(z.string())
+    .refine(value => value.length < 1, {message: 'Escolha ao menos 1 opção.'}),
 });
 
 type TCreateProductSchema = z.infer<typeof createProductSchema>;
@@ -46,13 +54,14 @@ export function CreateProductScreen({
 }: NativeStackScreenProps<TStackParamList>) {
   const [productImages, setProductImages] = useState<ImageOrVideo[]>([]);
 
-  const {control, handleSubmit, setValue, watch} =
+  const {control, handleSubmit, setValue, watch, getFieldState} =
     useForm<TCreateProductSchema>({
       resolver: zodResolver(createProductSchema),
     });
 
   const isNew = watch('is_new');
   const paymentMethodsAccepted = watch('payment_methods') ?? [];
+  const {error: paymentMethodsAcceptedError} = getFieldState('payment_methods');
 
   function onPressBackButton() {
     navigation.goBack();
@@ -125,10 +134,16 @@ export function CreateProductScreen({
                 Imagens
               </Text>
 
-              <Text color="GRAY_3" fontSize={14}>
-                Escolha até 3 imagens para mostrar o quanto o seu produto é
-                incrível!
-              </Text>
+              <View>
+                <Text color="GRAY_3" fontSize={14}>
+                  Escolha até 3 imagens para mostrar o quanto o seu produto é
+                  incrível!
+                </Text>
+
+                <Text style={{marginTop: 4}} fontSize={14} color="RED_LIGHT">
+                  OBS: Você precisa escolher ao menos uma imagem.
+                </Text>
+              </View>
 
               <S.ImagesContainer>
                 {productImages.map(image => (
@@ -268,6 +283,7 @@ export function CreateProductScreen({
               <S.CheckboxesContainer>
                 {PAYMENT_METHODS.map(paymentMethod => (
                   <S.RadioContainer
+                    key={paymentMethod}
                     onPress={() => changeCheckboxesValue(paymentMethod)}>
                     <Checkbox.Android
                       onPress={() => changeCheckboxesValue(paymentMethod)}
@@ -283,8 +299,10 @@ export function CreateProductScreen({
                 ))}
               </S.CheckboxesContainer>
 
-              {paymentMethodsAccepted.length < 1 && (
-                <Text color="RED_LIGHT">Escolha ao menos 1 opção.</Text>
+              {!!paymentMethodsAcceptedError?.message && (
+                <Text color="RED_LIGHT">
+                  {paymentMethodsAcceptedError.message}
+                </Text>
               )}
             </S.FormField>
           </S.FormContainer>
