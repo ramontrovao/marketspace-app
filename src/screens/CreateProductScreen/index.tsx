@@ -11,6 +11,8 @@ import {Button} from '../../components/Button';
 import {Checkbox, RadioButton} from 'react-native-paper';
 import ImageCropPicker, {ImageOrVideo} from 'react-native-image-crop-picker';
 import {z} from 'zod';
+import {Controller, useForm} from 'react-hook-form';
+import {zodResolver} from '@hookform/resolvers/zod';
 
 const PAYMENT_METHODS = [
   'Boleto',
@@ -29,7 +31,7 @@ const createProductSchema = z.object({
     .min(5, 'Digite um título válido.'),
   is_new: z.boolean({message: 'Este campo é obrigatório.'}).default(false),
   price: z
-    .number({message: 'Este campo é obrigatório.'})
+    .string({message: 'Este campo é obrigatório.'})
     .min(1, 'Digite um valor válido.'),
   accept_trade: z
     .boolean({message: 'Este campo é obrigatório.'})
@@ -37,22 +39,23 @@ const createProductSchema = z.object({
   payment_methods: z.array(z.string()),
 });
 
+type TCreateProductSchema = z.infer<typeof createProductSchema>;
+
 export function CreateProductScreen({
   navigation,
 }: NativeStackScreenProps<TStackParamList>) {
   const [productImages, setProductImages] = useState<ImageOrVideo[]>([]);
-  const [paymentMethodsAccepted, setPaymentMethodsAccepted] = useState<
-    string[]
-  >([]);
-  const [productType, setProductType] = useState('used');
-  const [acceptTrade, setAcceptTrade] = useState(false);
+
+  const {control, handleSubmit, setValue, watch} =
+    useForm<TCreateProductSchema>({
+      resolver: zodResolver(createProductSchema),
+    });
+
+  const isNew = watch('is_new');
+  const paymentMethodsAccepted = watch('payment_methods') ?? [];
 
   function onPressBackButton() {
     navigation.goBack();
-  }
-
-  function toggleTradeSwitch() {
-    setAcceptTrade(!acceptTrade);
   }
 
   function changeCheckboxesValue(value: string) {
@@ -61,11 +64,11 @@ export function CreateProductScreen({
         paymentMethod => paymentMethod !== value,
       );
 
-      setPaymentMethodsAccepted(paymentMethodsUpdated);
+      setValue('payment_methods', paymentMethodsUpdated);
       return;
     }
 
-    setPaymentMethodsAccepted(arr => [...arr, value]);
+    setValue('payment_methods', [...paymentMethodsAccepted, value]);
   }
 
   async function onAddImage() {
@@ -85,6 +88,10 @@ export function CreateProductScreen({
     );
 
     setProductImages(productImagesUpdated);
+  }
+
+  function onSubmit(data) {
+    console.log(data);
   }
 
   return (
@@ -119,7 +126,7 @@ export function CreateProductScreen({
               </Text>
 
               <Text color="GRAY_3" fontSize={14}>
-                Escolha até 3 imagens para mostrar o quando o seu produto é
+                Escolha até 3 imagens para mostrar o quanto o seu produto é
                 incrível!
               </Text>
 
@@ -147,22 +154,51 @@ export function CreateProductScreen({
                 Sobre o produto
               </Text>
 
-              <TextInput
-                backgroundColor="WHITE"
-                placeholder="Título do anúncio"
+              <Controller
+                control={control}
+                name="name"
+                render={({
+                  fieldState: {error},
+                  field: {onChange, onBlur, value},
+                }) => (
+                  <TextInput
+                    onChangeText={onChange}
+                    onBlur={onBlur}
+                    value={value}
+                    errorMessage={error?.message}
+                    backgroundColor="WHITE"
+                    placeholder="Título do anúncio"
+                  />
+                )}
               />
-              <TextInput
-                backgroundColor="WHITE"
-                multiline
-                textAlignVertical="top"
-                placeholder="Descrição do produto"
+
+              <Controller
+                control={control}
+                name="description"
+                render={({
+                  fieldState: {error},
+                  field: {onChange, onBlur, value},
+                }) => (
+                  <TextInput
+                    onChangeText={onChange}
+                    onBlur={onBlur}
+                    value={value}
+                    errorMessage={error?.message}
+                    backgroundColor="WHITE"
+                    multiline
+                    textAlignVertical="top"
+                    placeholder="Descrição do produto"
+                  />
+                )}
               />
 
               <RadioButton.Group
-                onValueChange={newValue => setProductType(newValue)}
-                value={productType}>
+                onValueChange={newValue =>
+                  setValue('is_new', newValue === 'new')
+                }
+                value={isNew ? 'new' : 'used'}>
                 <S.RadioContainer>
-                  <S.RadioContainer onPress={() => setProductType('new')}>
+                  <S.RadioContainer onPress={() => setValue('is_new', true)}>
                     <RadioButton.Android
                       color={THEME.COLORS.BLUE_LIGHT}
                       value="new"
@@ -170,7 +206,7 @@ export function CreateProductScreen({
                     <Text>Produto novo</Text>
                   </S.RadioContainer>
 
-                  <S.RadioContainer onPress={() => setProductType('used')}>
+                  <S.RadioContainer onPress={() => setValue('is_new', false)}>
                     <RadioButton.Android
                       color={THEME.COLORS.BLUE_LIGHT}
                       value="used"
@@ -186,10 +222,23 @@ export function CreateProductScreen({
                 Venda
               </Text>
 
-              <TextInput
-                backgroundColor="WHITE"
-                keyboardType="numeric"
-                placeholder="Valor do produto"
+              <Controller
+                control={control}
+                name="price"
+                render={({
+                  fieldState: {error},
+                  field: {onChange, onBlur, value},
+                }) => (
+                  <TextInput
+                    onChangeText={onChange}
+                    onBlur={onBlur}
+                    value={value}
+                    errorMessage={error?.message}
+                    backgroundColor="WHITE"
+                    keyboardType="numeric"
+                    placeholder="Valor do produto"
+                  />
+                )}
               />
             </S.FormField>
 
@@ -198,10 +247,16 @@ export function CreateProductScreen({
                 Aceita troca?
               </Text>
 
-              <Switch
-                trackColor={{true: THEME.COLORS.BLUE_LIGHT}}
-                value={acceptTrade}
-                onValueChange={toggleTradeSwitch}
+              <Controller
+                control={control}
+                name="accept_trade"
+                render={({field: {onChange, value}}) => (
+                  <Switch
+                    trackColor={{true: THEME.COLORS.BLUE_LIGHT}}
+                    value={value}
+                    onValueChange={onChange}
+                  />
+                )}
               />
             </S.FormField>
 
@@ -227,13 +282,19 @@ export function CreateProductScreen({
                   </S.RadioContainer>
                 ))}
               </S.CheckboxesContainer>
+
+              {paymentMethodsAccepted.length < 1 && (
+                <Text color="RED_LIGHT">Escolha ao menos 1 opção.</Text>
+              )}
             </S.FormField>
           </S.FormContainer>
         </ScrollView>
 
         <S.FooterContainer>
           <Button variant="tertiary">Cancelar</Button>
-          <Button variant="secondary">Avançar</Button>
+          <Button onPress={handleSubmit(onSubmit)} variant="secondary">
+            Avançar
+          </Button>
         </S.FooterContainer>
       </S.CreateProductContainer>
     </>
