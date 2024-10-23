@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import * as S from './styles';
 import {
   ScrollView,
@@ -19,13 +19,34 @@ import ImageCropPicker, {ImageOrVideo} from 'react-native-image-crop-picker';
 import {z} from 'zod';
 import {Controller, useForm} from 'react-hook-form';
 import {zodResolver} from '@hookform/resolvers/zod';
+import {TPaymentMethod} from '../../types/product';
+import {useCreateProduct} from '../../hooks/http/useCreateProduct';
+import Toast from 'react-native-toast-message';
 
-const PAYMENT_METHODS = [
-  'Boleto',
-  'Pix',
-  'Dinheiro',
-  'Cartão de Crédito',
-  'Depósito Bancário',
+const PAYMENT_METHODS: {
+  id: TPaymentMethod;
+  name: string;
+}[] = [
+  {
+    id: 'boleto',
+    name: 'Boleto',
+  },
+  {
+    id: 'pix',
+    name: 'Pix',
+  },
+  {
+    id: 'cash',
+    name: 'Dinheiro',
+  },
+  {
+    id: 'card',
+    name: 'Cartão de crédito',
+  },
+  {
+    id: 'deposit',
+    name: 'Depósito bancário',
+  },
 ];
 
 const createProductSchema = z.object({
@@ -42,9 +63,7 @@ const createProductSchema = z.object({
   accept_trade: z
     .boolean({message: 'Este campo é obrigatório.'})
     .default(false),
-  payment_methods: z
-    .array(z.string())
-    .refine(value => value.length < 1, {message: 'Escolha ao menos 1 opção.'}),
+  payment_methods: z.array(z.string()),
 });
 
 type TCreateProductSchema = z.infer<typeof createProductSchema>;
@@ -62,6 +81,16 @@ export function CreateProductScreen({
   const isNew = watch('is_new');
   const paymentMethodsAccepted = watch('payment_methods') ?? [];
   const {error: paymentMethodsAcceptedError} = getFieldState('payment_methods');
+
+  const {createProduct} = useCreateProduct({
+    onError: error => {
+      Toast.show({
+        type: 'error',
+        text1: 'Ocorreu um erro! :(',
+        text2: error.message,
+      });
+    },
+  });
 
   function onPressBackButton() {
     navigation.goBack();
@@ -99,8 +128,18 @@ export function CreateProductScreen({
     setProductImages(productImagesUpdated);
   }
 
-  function onSubmit(data) {
-    console.log(data);
+  async function onSubmit(data: TCreateProductSchema) {
+    if (productImages.length < 1) {
+      Toast.show({
+        type: 'error',
+        text1: 'Falha no envio do formulário. :(',
+        text2: 'Selecione ao menos uma imagem!',
+      });
+
+      return;
+    }
+
+    await createProduct({...data, price: Number(data.price)});
   }
 
   return (
@@ -283,18 +322,18 @@ export function CreateProductScreen({
               <S.CheckboxesContainer>
                 {PAYMENT_METHODS.map(paymentMethod => (
                   <S.RadioContainer
-                    key={paymentMethod}
-                    onPress={() => changeCheckboxesValue(paymentMethod)}>
+                    key={paymentMethod.id}
+                    onPress={() => changeCheckboxesValue(paymentMethod.id)}>
                     <Checkbox.Android
-                      onPress={() => changeCheckboxesValue(paymentMethod)}
+                      onPress={() => changeCheckboxesValue(paymentMethod.id)}
                       status={
-                        paymentMethodsAccepted.includes(paymentMethod)
+                        paymentMethodsAccepted.includes(paymentMethod.id)
                           ? 'checked'
                           : 'unchecked'
                       }
                       color={THEME.COLORS.BLUE_LIGHT}
                     />
-                    <Text>{paymentMethod}</Text>
+                    <Text>{paymentMethod.name}</Text>
                   </S.RadioContainer>
                 ))}
               </S.CheckboxesContainer>
@@ -315,6 +354,8 @@ export function CreateProductScreen({
           </Button>
         </S.FooterContainer>
       </S.CreateProductContainer>
+
+      <Toast />
     </>
   );
 }
