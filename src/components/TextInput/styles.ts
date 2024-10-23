@@ -19,7 +19,7 @@ export const TextInput = styled(MaskInput).attrs(({theme}) => ({
   placeholderTextColor: theme.COLORS.GRAY_4,
 }))<TextInputStyledProps>`
   width: 100%;
-  min-height: ${({multiline}) => (multiline ? 160 : 45)}px;
+  height: ${({multiline}) => (multiline ? 160 : 45)}px;
   padding: 12px 16px;
   transition: 1s;
 

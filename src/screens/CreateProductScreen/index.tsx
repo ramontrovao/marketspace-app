@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import * as S from './styles';
 import {
   ScrollView,
@@ -20,8 +20,8 @@ import {z} from 'zod';
 import {Controller, useForm} from 'react-hook-form';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {TPaymentMethod} from '../../types/product';
-import {useCreateProduct} from '../../hooks/http/useCreateProduct';
 import Toast from 'react-native-toast-message';
+import {formatWithMask, Masks} from 'react-native-mask-input';
 
 const PAYMENT_METHODS: {
   id: TPaymentMethod;
@@ -55,7 +55,8 @@ const createProductSchema = z.object({
     .min(5, 'Seu título deve conter ao menos 5 caracteres.'),
   description: z
     .string({message: 'Este campo é obrigatório.'})
-    .min(5, 'Digite um título válido.'),
+    .min(5, 'Digite uma descrição válida.')
+    .max(10000, 'Sua descrição está muito grande. Reduza.'),
   is_new: z.boolean({message: 'Este campo é obrigatório.'}).default(false),
   price: z
     .string({message: 'Este campo é obrigatório.'})
@@ -63,7 +64,7 @@ const createProductSchema = z.object({
   accept_trade: z
     .boolean({message: 'Este campo é obrigatório.'})
     .default(false),
-  payment_methods: z.array(z.string()),
+  payment_methods: z.array(z.string()).nullable(),
 });
 
 type TCreateProductSchema = z.infer<typeof createProductSchema>;
@@ -81,16 +82,6 @@ export function CreateProductScreen({
   const isNew = watch('is_new');
   const paymentMethodsAccepted = watch('payment_methods') ?? [];
   const {error: paymentMethodsAcceptedError} = getFieldState('payment_methods');
-
-  const {createProduct} = useCreateProduct({
-    onError: error => {
-      Toast.show({
-        type: 'error',
-        text1: 'Ocorreu um erro! :(',
-        text2: error.message,
-      });
-    },
-  });
 
   function onPressBackButton() {
     navigation.goBack();
@@ -128,7 +119,14 @@ export function CreateProductScreen({
     setProductImages(productImagesUpdated);
   }
 
-  async function onSubmit(data: TCreateProductSchema) {
+  async function onSubmit({price, ...rest}: TCreateProductSchema) {
+    const {unmasked: unmaskedPrice} = formatWithMask({
+      text: price,
+      mask: Masks.BRL_CURRENCY,
+    });
+
+    const data = {price: Number(unmaskedPrice), ...rest};
+
     if (productImages.length < 1) {
       Toast.show({
         type: 'error',
@@ -139,7 +137,7 @@ export function CreateProductScreen({
       return;
     }
 
-    await createProduct({...data, price: Number(data.price)});
+    console.log(data);
   }
 
   return (
@@ -186,7 +184,9 @@ export function CreateProductScreen({
 
               <S.ImagesContainer>
                 {productImages.map(image => (
-                  <TouchableOpacity onPress={() => onRemoveImage(image.path)}>
+                  <TouchableOpacity
+                    key={image.path}
+                    onPress={() => onRemoveImage(image.path)}>
                     <S.RemoveImageContainer>
                       <X color={THEME.COLORS.WHITE} size={12} />
                     </S.RemoveImageContainer>
@@ -288,6 +288,7 @@ export function CreateProductScreen({
                     onBlur={onBlur}
                     value={value}
                     errorMessage={error?.message}
+                    mask={Masks.BRL_CURRENCY}
                     backgroundColor="WHITE"
                     keyboardType="numeric"
                     placeholder="Valor do produto"
